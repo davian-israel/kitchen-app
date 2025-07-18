@@ -238,10 +238,27 @@ export default function MenuPage() {
                     </div>
                   )}
 
-                  {/* Add to Cart Button */}
-                  <button className="w-full bg-orange-600 hover:bg-orange-700 text-white py-2 px-4 rounded-md font-medium transition-colors">
-                    Add to Cart
-                  </button>
+                  {/* Add to Cart Section */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <button 
+                        className="bg-gray-200 hover:bg-gray-300 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center font-medium"
+                        onClick={() => {/* TODO: Decrease quantity */}}
+                      >
+                        -
+                      </button>
+                      <span className="w-8 text-center font-medium">1</span>
+                      <button 
+                        className="bg-gray-200 hover:bg-gray-300 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center font-medium"
+                        onClick={() => {/* TODO: Increase quantity */}}
+                      >
+                        +
+                      </button>
+                    </div>
+                    <button className="bg-orange-600 hover:bg-orange-700 text-white py-2 px-4 rounded-md font-medium transition-colors flex-1 ml-4">
+                      Add to Cart
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
