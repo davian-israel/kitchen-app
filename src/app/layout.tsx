@@ -17,7 +17,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Israel Kitchen",
-  description: "Authentic Israeli cuisine delivered fresh to your table",
+  description: "Authentic 12 tribes cuisine delivered fresh to your table",
 };
 
 export default async function RootLayout({
