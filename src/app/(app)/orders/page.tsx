@@ -119,7 +119,7 @@ export default async function OrdersPage() {
             <div className="text-6xl mb-4">📋</div>
             <h2 className="text-xl font-semibold text-gray-900 mb-2">No Orders Yet</h2>
             <p className="text-gray-600 mb-6">
-              You haven't placed any orders yet. Ready to try our delicious Israeli cuisine?
+              You haven't placed any orders yet. Ready to try our delicious israel cuisine?
             </p>
             <Link
               href="/menu"

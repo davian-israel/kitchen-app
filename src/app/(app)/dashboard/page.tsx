@@ -53,7 +53,7 @@ export default async function DashboardPage() {
             Welcome back, {session.user.name || 'Valued Customer'}!
           </h1>
           <p className="text-gray-600">
-            Ready to explore authentic Israeli cuisine? Browse our menu and place your order.
+            Ready to explore authentic israel cuisine? Browse our menu and place your order.
           </p>
         </div>
 
@@ -67,7 +67,7 @@ export default async function DashboardPage() {
               <div className="text-3xl mr-4">🍽️</div>
               <div>
                 <h3 className="text-lg font-semibold text-gray-900">Browse Menu</h3>
-                <p className="text-gray-600">Explore our delicious Israeli dishes</p>
+                <p className="text-gray-600">Explore our delicious israel dishes</p>
               </div>
             </div>
           </Link>

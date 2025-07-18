@@ -62,7 +62,7 @@ async function main() {
       available: true,
     },
     {
-      name: 'Israeli Salad',
+      name: 'israel Salad',
       description: 'Fresh diced tomatoes, cucumbers, and herbs with lemon dressing',
       price: 7.99,
       category: 'Salad',

@@ -136,7 +136,7 @@ export default function MenuPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Our Menu</h1>
-          <p className="text-gray-600">Authentic Israeli cuisine made with fresh ingredients</p>
+          <p className="text-gray-600">Authentic israel cuisine made with fresh ingredients</p>
         </div>
 
         {meals.length > 0 && (
@@ -268,7 +268,7 @@ export default function MenuPage() {
             <div className="text-6xl mb-4">🍽️</div>
             <h2 className="text-xl font-semibold text-gray-900 mb-2">Menu Coming Soon</h2>
             <p className="text-gray-600 mb-6">
-              We're preparing our delicious Israeli dishes for you. Check back soon!
+              We're preparing our delicious israel dishes for you. Check back soon!
             </p>
             <Link
               href="/dashboard"

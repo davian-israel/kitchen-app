@@ -32,11 +32,11 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center">
           <h2 className="text-4xl font-bold text-gray-900 sm:text-5xl md:text-6xl">
-            Authentic Israeli Cuisine
+            Authentic israel Cuisine
           </h2>
           <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
             Experience the rich flavors of Israel with our carefully crafted dishes. 
-            From traditional falafel to modern Israeli fusion, we bring the taste of the Mediterranean to your table.
+            From traditional falafel to modern israel fusion, we bring the taste of the Mediterranean to your table.
           </p>
           <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
             <div className="rounded-md shadow">
@@ -84,7 +84,7 @@ export default function Home() {
                 <div className="text-3xl mb-4">👨‍🍳</div>
                 <h3 className="text-lg font-medium text-gray-900">Expert Chefs</h3>
                 <p className="mt-2 text-base text-gray-500">
-                  Our experienced chefs bring authentic Israeli flavors to every dish.
+                  Our experienced chefs bring authentic israel flavors to every dish.
                 </p>
               </div>
             </div>
