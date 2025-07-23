@@ -20,20 +20,36 @@ export const authConfig: NextAuthConfig = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        console.log('🔍 NextAuth authorize called with:', { 
+          email: credentials?.email, 
+          hasPassword: !!credentials?.password 
+        })
+        
         try {
           const { email, password } = loginSchema.parse(credentials)
+          console.log('✅ Zod validation passed for:', email)
 
           const user = await db.user.findUnique({
             where: { email },
           })
 
-          if (!user || user.status === 'DISABLED') {
+          if (!user) {
+            console.log('❌ User not found:', email)
             return null
           }
 
+          if (user.status === 'DISABLED') {
+            console.log('❌ User disabled:', email)
+            return null
+          }
+
+          console.log('✅ User found:', { id: user.id, email: user.email, role: user.role, status: user.status })
+
           const isValidPassword = await verifyPassword(password, user.passwordHash)
+          console.log('🔐 Password verification result:', isValidPassword)
           
           if (!isValidPassword) {
+            console.log('❌ Password verification failed for:', email)
             return null
           }
 
@@ -46,14 +62,17 @@ export const authConfig: NextAuthConfig = {
             },
           })
 
-          return {
+          const authResult = {
             id: user.id,
             email: user.email,
             name: user.name,
             role: user.role,
           }
+
+          console.log('✅ NextAuth returning user:', authResult)
+          return authResult
         } catch (error) {
-          console.error('Authentication error:', error)
+          console.error('❌ Authentication error:', error)
           return null
         }
       },

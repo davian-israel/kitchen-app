@@ -71,7 +71,7 @@ export async function middleware(request: NextRequest) {
   const session = await auth()
 
   // Apply CSRF protection to API routes (except auth endpoints) after getting session
-  if (pathname.startsWith('/api/')) {
+  if (pathname.startsWith('/api/') && !pathname.startsWith('/api/auth/')) {
     const csrfMiddleware = createCSRFMiddleware()
     const csrfResult = csrfMiddleware(request)
     
