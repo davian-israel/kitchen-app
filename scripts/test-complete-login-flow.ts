@@ -6,7 +6,7 @@
 
 import fetch from 'node-fetch'
 
-const BASE_URL = 'http://localhost:3000'
+const BASE_URL = 'http://localhost:3004'
 
 async function testCompleteLoginFlow() {
   console.log('🧪 Testing Complete Login Flow...\n')
