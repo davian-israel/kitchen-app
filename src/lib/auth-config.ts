@@ -12,6 +12,8 @@ const loginSchema = z.object({
 
 export const authConfig: NextAuthConfig = {
   adapter: PrismaAdapter(db),
+  trustHost: true,
+  debug: true, // Enable debug mode to see more logs
   providers: [
     Credentials({
       name: 'credentials',

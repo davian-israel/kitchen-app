@@ -4,7 +4,8 @@ import { auth } from '@/auth'
 import { securityHeaders } from '@/lib/validation'
 import { apiRateLimit, authRateLimit, adminRateLimit, addRateLimitHeaders, getClientIdentifier } from '@/lib/rate-limit'
 import { auditLogger, AuditAction } from '@/lib/audit-logger'
-import { createCSRFMiddleware } from '@/lib/csrf'
+// CSRF middleware import removed - using NextAuth's built-in CSRF protection
+// import { createCSRFMiddleware } from '@/lib/csrf'
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -70,53 +71,15 @@ export async function middleware(request: NextRequest) {
 
   const session = await auth()
 
-  // Apply CSRF protection to API routes (except auth endpoints) after getting session
-  if (pathname.startsWith('/api/') && !pathname.startsWith('/api/auth/')) {
-    const csrfMiddleware = createCSRFMiddleware()
-    const csrfResult = csrfMiddleware(request)
-    
-    if (!csrfResult.valid) {
-      // Log CSRF token validation failure
-      await auditLogger.logSecurity(
-        AuditAction.INVALID_TOKEN,
-        session?.user?.id,
-        request,
-        {
-          path: pathname,
-          error: csrfResult.error,
-          tokenType: 'csrf'
-        }
-      )
-
-      const csrfResponse = NextResponse.json(
-        {
-          error: 'Invalid CSRF token',
-          message: csrfResult.error || 'CSRF token validation failed',
-        },
-        { status: 403 }
-      )
-      
-      // Add security headers
-      Object.entries(securityHeaders).forEach(([key, value]) => {
-        csrfResponse.headers.set(key, value)
-      })
-      
-      return csrfResponse
-    }
-  }
+  // CSRF protection is now handled by NextAuth's built-in CSRF protection
+  // Custom CSRF middleware has been disabled to prevent conflicts
 
   // Public routes that don't require authentication
   const publicRoutes = [
     '/',
     '/auth/signin',
     '/auth/register',
-    '/api/auth/register',
-    '/api/auth/signin',
-    '/api/auth/signout',
-    '/api/auth/session',
-    '/api/auth/providers',
-    '/api/auth/csrf',
-    '/api/auth/callback',
+    '/api/auth',  // This covers all NextAuth routes including callbacks
     '/_next',
     '/favicon.ico'
   ]
