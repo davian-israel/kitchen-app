@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { useCart } from '@/contexts/CartContext'
+import CartButton from '@/components/cart/CartButton'
+import ResponsiveHeader from '@/components/navigation/ResponsiveHeader'
 
 interface Meal {
   id: string
@@ -19,11 +22,13 @@ interface Meal {
 
 export default function MenuPage() {
   const { data: session, status } = useSession()
+  const { addItem, openCart } = useCart()
   const [meals, setMeals] = useState<Meal[]>([])
   const [filteredMeals, setFilteredMeals] = useState<Meal[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string>('All')
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(true)
+  const [quantities, setQuantities] = useState<Record<string, number>>({})
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -77,6 +82,45 @@ export default function MenuPage() {
 
   const categories = ['All', ...new Set(meals.map(meal => meal.category))]
 
+  // Initialize quantities for all meals
+  useEffect(() => {
+    const initialQuantities: Record<string, number> = {}
+    meals.forEach(meal => {
+      initialQuantities[meal.id] = 1
+    })
+    setQuantities(initialQuantities)
+  }, [meals])
+
+  const updateQuantity = (mealId: string, newQuantity: number) => {
+    if (newQuantity >= 1) {
+      setQuantities(prev => ({
+        ...prev,
+        [mealId]: newQuantity
+      }))
+    }
+  }
+
+  const handleAddToCart = (meal: Meal) => {
+    const quantity = quantities[meal.id] || 1
+    addItem({
+      id: meal.id,
+      name: meal.name,
+      price: meal.price,
+      imageUrl: meal.imageUrl,
+      category: meal.category,
+      quantity
+    })
+    
+    // Show visual feedback by opening cart briefly
+    openCart()
+    
+    // Reset quantity to 1 after adding
+    setQuantities(prev => ({
+      ...prev,
+      [meal.id]: 1
+    }))
+  }
+
   if (status === 'loading' || isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -95,41 +139,7 @@ export default function MenuPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation Header */}
-      <nav className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-8">
-              <Link href="/dashboard" className="text-xl font-bold text-orange-600">
-                Israel Kitchen
-              </Link>
-              <div className="hidden md:flex space-x-6">
-                <Link href="/menu" className="text-orange-600 font-medium">
-                  Menu
-                </Link>
-                <Link href="/orders" className="text-gray-700 hover:text-orange-600 font-medium">
-                  My Orders
-                </Link>
-                <Link href="/profile" className="text-gray-700 hover:text-orange-600 font-medium">
-                  Profile
-                </Link>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">
-                {session.user.name || session.user.email}
-              </span>
-              <form action="/api/auth/signout" method="post">
-                <button
-                  type="submit"
-                  className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Sign Out
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <ResponsiveHeader />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -185,24 +195,24 @@ export default function MenuPage() {
 
         {/* Menu Items */}
         {filteredMeals.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {filteredMeals.map((meal) => (
               <div key={meal.id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
                 {meal.imageUrl && (
                   <img
                     src={meal.imageUrl}
                     alt={meal.name}
-                    className="w-full h-48 object-cover"
+                    className="w-full h-40 sm:h-48 object-cover"
                   />
                 )}
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-lg font-semibold text-gray-900">{meal.name}</h3>
-                    <span className="text-lg font-bold text-orange-600">
+                <div className="p-4 sm:p-6">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-0">{meal.name}</h3>
+                    <span className="text-lg font-bold text-orange-600 flex-shrink-0">
                       ${meal.price.toFixed(2)}
                     </span>
                   </div>
-                  <p className="text-gray-600 mb-4">{meal.description}</p>
+                  <p className="text-gray-600 mb-3 text-sm sm:text-base line-clamp-2">{meal.description}</p>
                   
                   {/* Category */}
                   <div className="mb-3">
@@ -211,11 +221,11 @@ export default function MenuPage() {
                     </span>
                   </div>
 
-                  {/* Ingredients */}
+                  {/* Ingredients - Collapsible on mobile */}
                   {meal.ingredients && meal.ingredients.length > 0 && (
                     <div className="mb-3">
                       <p className="text-xs text-gray-500 mb-1">Ingredients:</p>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">
                         {meal.ingredients.join(', ')}
                       </p>
                     </div>
@@ -226,7 +236,7 @@ export default function MenuPage() {
                     <div className="mb-4">
                       <p className="text-xs text-gray-500 mb-1">Allergens:</p>
                       <div className="flex flex-wrap gap-1">
-                        {meal.allergens.map((allergen) => (
+                        {meal.allergens.slice(0, 3).map((allergen) => (
                           <span
                             key={allergen}
                             className="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full"
@@ -234,28 +244,34 @@ export default function MenuPage() {
                             {allergen}
                           </span>
                         ))}
+                        {meal.allergens.length > 3 && (
+                          <span className="text-xs text-gray-500">+{meal.allergens.length - 3} more</span>
+                        )}
                       </div>
                     </div>
                   )}
 
-                  {/* Add to Cart Section */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
+                  {/* Add to Cart Section - Mobile Optimized */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div className="flex items-center justify-center sm:justify-start space-x-3">
                       <button 
-                        className="bg-gray-200 hover:bg-gray-300 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center font-medium"
-                        onClick={() => {/* TODO: Decrease quantity */}}
+                        className="bg-gray-200 hover:bg-gray-300 text-gray-700 w-10 h-10 rounded-full flex items-center justify-center font-medium touch-manipulation"
+                        onClick={() => updateQuantity(meal.id, (quantities[meal.id] || 1) - 1)}
                       >
                         -
                       </button>
-                      <span className="w-8 text-center font-medium">1</span>
+                      <span className="w-8 text-center font-medium text-lg">{quantities[meal.id] || 1}</span>
                       <button 
-                        className="bg-gray-200 hover:bg-gray-300 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center font-medium"
-                        onClick={() => {/* TODO: Increase quantity */}}
+                        className="bg-gray-200 hover:bg-gray-300 text-gray-700 w-10 h-10 rounded-full flex items-center justify-center font-medium touch-manipulation"
+                        onClick={() => updateQuantity(meal.id, (quantities[meal.id] || 1) + 1)}
                       >
                         +
                       </button>
                     </div>
-                    <button className="bg-orange-600 hover:bg-orange-700 text-white py-2 px-4 rounded-md font-medium transition-colors flex-1 ml-4">
+                    <button 
+                      className="bg-orange-600 hover:bg-orange-700 text-white py-3 px-4 rounded-md font-medium transition-colors w-full sm:w-auto sm:flex-1 sm:ml-4 touch-manipulation"
+                      onClick={() => handleAddToCart(meal)}
+                    >
                       Add to Cart
                     </button>
                   </div>

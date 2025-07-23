@@ -1,10 +1,109 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { auth } from '@/auth'
+import { securityHeaders } from '@/lib/validation'
+import { apiRateLimit, authRateLimit, adminRateLimit, addRateLimitHeaders, getClientIdentifier } from '@/lib/rate-limit'
+import { auditLogger, AuditAction } from '@/lib/audit-logger'
+import { createCSRFMiddleware } from '@/lib/csrf'
 
 export async function middleware(request: NextRequest) {
-  const session = await auth()
   const { pathname } = request.nextUrl
+
+  // Create response with security headers
+  const response = NextResponse.next()
+  
+  // Add security headers to all responses
+  Object.entries(securityHeaders).forEach(([key, value]) => {
+    response.headers.set(key, value)
+  })
+
+  // Apply rate limiting to API routes
+  if (pathname.startsWith('/api/')) {
+    let rateLimitResult
+    
+    // Apply stricter rate limiting to auth endpoints
+    if (pathname.startsWith('/api/auth/') || pathname.includes('login') || pathname.includes('register')) {
+      rateLimitResult = authRateLimit(request)
+    } else if (pathname.startsWith('/api/admin/')) {
+      rateLimitResult = adminRateLimit(request)
+    } else {
+      rateLimitResult = apiRateLimit(request)
+    }
+    
+    if (!rateLimitResult.success) {
+      // Log rate limit exceeded
+      await auditLogger.logSecurity(
+        AuditAction.RATE_LIMIT_EXCEEDED,
+        undefined,
+        request,
+        {
+          path: pathname,
+          limit: rateLimitResult.limit,
+          resetTime: rateLimitResult.resetTime,
+          clientId: getClientIdentifier(request)
+        }
+      )
+
+      const rateLimitResponse = NextResponse.json(
+        {
+          error: 'Too many requests',
+          message: rateLimitResult.message || 'Rate limit exceeded. Please try again later.',
+        },
+        { status: 429 }
+      )
+      
+      // Add security headers
+      Object.entries(securityHeaders).forEach(([key, value]) => {
+        rateLimitResponse.headers.set(key, value)
+      })
+      
+      // Add rate limit headers
+      addRateLimitHeaders(rateLimitResponse.headers, rateLimitResult)
+      
+      return rateLimitResponse
+    }
+
+    // Add rate limit headers to successful responses
+    addRateLimitHeaders(response.headers, rateLimitResult)
+
+  }
+
+  const session = await auth()
+
+  // Apply CSRF protection to API routes (except auth endpoints) after getting session
+  if (pathname.startsWith('/api/')) {
+    const csrfMiddleware = createCSRFMiddleware()
+    const csrfResult = csrfMiddleware(request)
+    
+    if (!csrfResult.valid) {
+      // Log CSRF token validation failure
+      await auditLogger.logSecurity(
+        AuditAction.INVALID_TOKEN,
+        session?.user?.id,
+        request,
+        {
+          path: pathname,
+          error: csrfResult.error,
+          tokenType: 'csrf'
+        }
+      )
+
+      const csrfResponse = NextResponse.json(
+        {
+          error: 'Invalid CSRF token',
+          message: csrfResult.error || 'CSRF token validation failed',
+        },
+        { status: 403 }
+      )
+      
+      // Add security headers
+      Object.entries(securityHeaders).forEach(([key, value]) => {
+        csrfResponse.headers.set(key, value)
+      })
+      
+      return csrfResponse
+    }
+  }
 
   // Public routes that don't require authentication
   const publicRoutes = [
@@ -12,14 +111,14 @@ export async function middleware(request: NextRequest) {
     '/auth/signin',
     '/auth/register',
     '/api/auth/register',
-  ]
-
-  // API routes that require authentication
-  const protectedApiRoutes = [
-    '/api/orders',
-    '/api/meals',
-    '/api/inventory',
-    '/api/users',
+    '/api/auth/signin',
+    '/api/auth/signout',
+    '/api/auth/session',
+    '/api/auth/providers',
+    '/api/auth/csrf',
+    '/api/auth/callback',
+    '/_next',
+    '/favicon.ico'
   ]
 
   // Admin routes
@@ -29,42 +128,112 @@ export async function middleware(request: NextRequest) {
   ]
 
   // Check if the route is public
-  if (publicRoutes.some(route => pathname.startsWith(route))) {
+  if (publicRoutes.some(route => pathname === route || pathname.startsWith(route))) {
     // If user is authenticated and trying to access auth pages, redirect to dashboard
     if (session && (pathname.startsWith('/auth/signin') || pathname.startsWith('/auth/register'))) {
-      return NextResponse.redirect(new URL('/dashboard', request.url))
+      const redirectResponse = NextResponse.redirect(new URL('/dashboard', request.url))
+      Object.entries(securityHeaders).forEach(([key, value]) => {
+        redirectResponse.headers.set(key, value)
+      })
+      return redirectResponse
     }
-    return NextResponse.next()
+    return response
   }
 
   // Check if user is authenticated
   if (!session) {
-    // Redirect to signin for protected routes
+    // Log unauthorized access attempt
+    await auditLogger.logSecurity(
+      AuditAction.UNAUTHORIZED_ACCESS,
+      undefined,
+      request,
+      { path: pathname, reason: 'no_session' }
+    )
+
+    // Return 401 for API routes
     if (pathname.startsWith('/api/')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      const unauthorizedResponse = NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      Object.entries(securityHeaders).forEach(([key, value]) => {
+        unauthorizedResponse.headers.set(key, value)
+      })
+      return unauthorizedResponse
     }
-    return NextResponse.redirect(new URL('/auth/signin', request.url))
+    
+    // Redirect to signin for web routes
+    const redirectResponse = NextResponse.redirect(new URL('/auth/signin', request.url))
+    Object.entries(securityHeaders).forEach(([key, value]) => {
+      redirectResponse.headers.set(key, value)
+    })
+    return redirectResponse
   }
 
   // Check admin routes
   if (adminRoutes.some(route => pathname.startsWith(route))) {
     if (session.user.role !== 'ADMIN') {
+      // Log unauthorized admin access attempt
+      await auditLogger.logSecurity(
+        AuditAction.UNAUTHORIZED_ACCESS,
+        session.user.id,
+        request,
+        { 
+          path: pathname, 
+          reason: 'insufficient_privileges', 
+          userRole: session.user.role 
+        }
+      )
+
       if (pathname.startsWith('/api/')) {
-        return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+        const forbiddenResponse = NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+        Object.entries(securityHeaders).forEach(([key, value]) => {
+          forbiddenResponse.headers.set(key, value)
+        })
+        return forbiddenResponse
       }
-      return NextResponse.redirect(new URL('/dashboard', request.url))
+      
+      const redirectResponse = NextResponse.redirect(new URL('/dashboard', request.url))
+      Object.entries(securityHeaders).forEach(([key, value]) => {
+        redirectResponse.headers.set(key, value)
+      })
+      return redirectResponse
+    }
+
+    // Log successful admin access
+    if (pathname.startsWith('/admin')) {
+      await auditLogger.logAdmin(
+        AuditAction.ADMIN_ACCESS,
+        session.user.id,
+        request,
+        undefined,
+        { path: pathname }
+      )
     }
   }
 
   // Check if user account is disabled
   if (session.user.status === 'DISABLED') {
+    await auditLogger.logSecurity(
+      AuditAction.UNAUTHORIZED_ACCESS,
+      session.user.id,
+      request,
+      { path: pathname, reason: 'account_disabled' }
+    )
+
     if (pathname.startsWith('/api/')) {
-      return NextResponse.json({ error: 'Account disabled' }, { status: 403 })
+      const disabledResponse = NextResponse.json({ error: 'Account disabled' }, { status: 403 })
+      Object.entries(securityHeaders).forEach(([key, value]) => {
+        disabledResponse.headers.set(key, value)
+      })
+      return disabledResponse
     }
-    return NextResponse.redirect(new URL('/auth/signin', request.url))
+    
+    const redirectResponse = NextResponse.redirect(new URL('/auth/signin', request.url))
+    Object.entries(securityHeaders).forEach(([key, value]) => {
+      redirectResponse.headers.set(key, value)
+    })
+    return redirectResponse
   }
 
-  return NextResponse.next()
+  return response
 }
 
 export const config = {

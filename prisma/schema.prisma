@@ -100,6 +100,7 @@ model Order {
   totalAmount   Decimal     @db.Decimal(10,2)
   paymentMethod String
   paymentId     String?
+  customerInfo  Json
   notes         String?
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt

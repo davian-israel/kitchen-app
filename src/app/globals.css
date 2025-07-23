@@ -2,6 +2,129 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom responsive utilities */
+@layer utilities {
+  /* Touch-friendly button sizing */
+  .touch-manipulation {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Text truncation utilities */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  /* Safe area utilities for mobile devices */
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-left {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .safe-right {
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Smooth scrolling */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+
+  /* Focus styles for accessibility */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2;
+  }
+
+  /* Mobile-first container utilities */
+  .container-mobile {
+    @apply px-4 mx-auto;
+  }
+
+  @screen sm {
+    .container-mobile {
+      @apply px-6;
+    }
+  }
+
+  @screen lg {
+    .container-mobile {
+      @apply px-8;
+    }
+  }
+
+  /* Responsive text utilities */
+  .text-responsive-xs {
+    @apply text-xs;
+  }
+
+  @screen sm {
+    .text-responsive-xs {
+      @apply text-sm;
+    }
+  }
+
+  .text-responsive-sm {
+    @apply text-sm;
+  }
+
+  @screen sm {
+    .text-responsive-sm {
+      @apply text-base;
+    }
+  }
+
+  .text-responsive-base {
+    @apply text-base;
+  }
+
+  @screen sm {
+    .text-responsive-base {
+      @apply text-lg;
+    }
+  }
+
+  /* Responsive spacing utilities */
+  .space-responsive {
+    @apply space-y-4;
+  }
+
+  @screen sm {
+    .space-responsive {
+      @apply space-y-6;
+    }
+  }
+
+  @screen lg {
+    .space-responsive {
+      @apply space-y-8;
+    }
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
