@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { useSearchParams, redirect } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { CheckCircle, Clock, MapPin, Phone } from 'lucide-react'
 
@@ -41,6 +41,7 @@ interface Order {
 
 export default function CheckoutSuccessPage() {
   const { data: session, status } = useSession()
+  const router = useRouter()
   const searchParams = useSearchParams()
   const orderId = searchParams.get('order_id')
   const [order, setOrder] = useState<Order | null>(null)
@@ -49,9 +50,9 @@ export default function CheckoutSuccessPage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      redirect('/auth/signin')
+      router.push('/auth/signin')
     }
-  }, [status])
+  }, [status, router])
 
   useEffect(() => {
     if (orderId && session) {

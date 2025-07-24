@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Clock, CheckCircle, Package, ChefHat, AlertCircle, MapPin, Phone, User, RefreshCw } from 'lucide-react'
 import ResponsiveHeader from '@/components/navigation/ResponsiveHeader'
@@ -94,6 +94,7 @@ const statusOrder = ['PENDING', 'IN_PROGRESS', 'READY', 'COMPLETED']
 
 export default function OrdersPage() {
   const { data: session, status } = useSession()
+  const router = useRouter()
   const [orders, setOrders] = useState<Order[]>([])
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -102,9 +103,9 @@ export default function OrdersPage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      redirect('/auth/signin')
+      router.push('/auth/signin')
     }
-  }, [status])
+  }, [status, router])
 
   useEffect(() => {
     if (session) {

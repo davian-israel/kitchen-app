@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useCart } from '@/contexts/CartContext'
 import { loadStripe } from '@stripe/stripe-js'
@@ -50,9 +50,9 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      redirect('/auth/signin')
+      router.push('/auth/signin')
     }
-  }, [status])
+  }, [status, router])
 
   useEffect(() => {
     if (session?.user) {

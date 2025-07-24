@@ -1,12 +1,12 @@
 import { auth } from '@/auth'
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
 
 export default async function DashboardPage() {
   const session = await auth()
 
+  // Layout already handles authentication, but we still need session data
   if (!session) {
-    redirect('/auth/signin')
+    return null // This shouldn't happen due to layout, but safety check
   }
 
   return (

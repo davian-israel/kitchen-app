@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Clock, User, MapPin, Phone, ChefHat, CheckCircle, AlertCircle, Package } from 'lucide-react'
 
@@ -64,6 +64,7 @@ const statusIcons = {
 
 export default function AdminOrdersPage() {
   const { data: session, status } = useSession()
+  const router = useRouter()
   const [orders, setOrders] = useState<Order[]>([])
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([])
   const [selectedStatus, setSelectedStatus] = useState<string>('ALL')
@@ -73,15 +74,15 @@ export default function AdminOrdersPage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      redirect('/auth/signin')
+      router.push('/auth/signin')
     }
-  }, [status])
+  }, [status, router])
 
   useEffect(() => {
     if (session) {
       // Check if user is admin
       if (session.user.role !== 'ADMIN') {
-        redirect('/dashboard')
+        router.push('/dashboard')
       } else {
         fetchOrders()
       }

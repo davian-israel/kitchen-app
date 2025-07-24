@@ -3,6 +3,7 @@ import Credentials from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { db } from './db'
 import { verifyPassword } from './auth'
+import { isDevelopment, getEnv } from './env-validation'
 import { z } from 'zod'
 
 const loginSchema = z.object({
@@ -10,10 +11,12 @@ const loginSchema = z.object({
   password: z.string().min(1),
 })
 
+const env = getEnv()
+
 export const authConfig: NextAuthConfig = {
   adapter: PrismaAdapter(db),
   trustHost: true,
-  debug: true, // Enable debug mode to see more logs
+  debug: isDevelopment() || env.NEXTAUTH_DEBUG === 'true',
   providers: [
     Credentials({
       name: 'credentials',
@@ -55,14 +58,19 @@ export const authConfig: NextAuthConfig = {
             return null
           }
 
-          // Log user activity
-          await db.userActivityLog.create({
-            data: {
-              userId: user.id,
-              action: 'LOGIN',
-              details: { method: 'credentials' },
-            },
-          })
+          // Log user activity (non-blocking)
+          try {
+            await db.userActivityLog.create({
+              data: {
+                userId: user.id,
+                action: 'LOGIN',
+                details: { method: 'credentials' },
+              },
+            })
+          } catch (logError) {
+            console.warn('Failed to log user activity:', logError)
+            // Continue authentication even if logging fails
+          }
 
           const authResult = {
             id: user.id,

@@ -22,8 +22,8 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith('/api/')) {
     let rateLimitResult
     
-    // Apply stricter rate limiting to auth endpoints
-    if (pathname.startsWith('/api/auth/') || pathname.includes('login') || pathname.includes('register')) {
+    // Apply stricter rate limiting to auth endpoints (but exclude NextAuth callbacks)
+    if ((pathname.startsWith('/api/auth/') && !pathname.includes('/callback/')) || pathname.includes('login') || pathname.includes('register')) {
       rateLimitResult = authRateLimit(request)
     } else if (pathname.startsWith('/api/admin/')) {
       rateLimitResult = adminRateLimit(request)

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { 
   BarChart3, 
@@ -76,6 +76,7 @@ interface ReportData {
 
 export default function ReportsPage() {
   const { data: session, status } = useSession()
+  const router = useRouter()
   const [reportData, setReportData] = useState<ReportData | null>(null)
   const [selectedDateRange, setSelectedDateRange] = useState('7d')
   const [selectedReport, setSelectedReport] = useState<'sales' | 'inventory' | 'performance'>('sales')
@@ -85,15 +86,15 @@ export default function ReportsPage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      redirect('/auth/signin')
+      router.push('/auth/signin')
     }
-  }, [status])
+  }, [status, router])
 
   useEffect(() => {
     if (session) {
       // Check if user is admin
       if (session.user.role !== 'ADMIN') {
-        redirect('/dashboard')
+        router.push('/dashboard')
       } else {
         fetchReports()
       }

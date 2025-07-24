@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useCart } from '@/contexts/CartContext'
 import CartButton from '@/components/cart/CartButton'
@@ -22,6 +22,7 @@ interface Meal {
 
 export default function MenuPage() {
   const { data: session, status } = useSession()
+  const router = useRouter()
   const { addItem, openCart } = useCart()
   const [meals, setMeals] = useState<Meal[]>([])
   const [filteredMeals, setFilteredMeals] = useState<Meal[]>([])
@@ -32,9 +33,9 @@ export default function MenuPage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      redirect('/auth/signin')
+      router.push('/auth/signin')
     }
-  }, [status])
+  }, [status, router])
 
   useEffect(() => {
     if (session) {

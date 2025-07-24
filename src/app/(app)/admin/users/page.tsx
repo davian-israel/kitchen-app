@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { 
   Users, 
@@ -59,6 +59,7 @@ const statusColors = {
 
 export default function UsersPage() {
   const { data: session, status } = useSession()
+  const router = useRouter()
   const [users, setUsers] = useState<UserData[]>([])
   const [filteredUsers, setFilteredUsers] = useState<UserData[]>([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -72,15 +73,15 @@ export default function UsersPage() {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      redirect('/auth/signin')
+      router.push('/auth/signin')
     }
-  }, [status])
+  }, [status, router])
 
   useEffect(() => {
     if (session) {
       // Check if user is admin
       if (session.user.role !== 'ADMIN') {
-        redirect('/dashboard')
+        router.push('/dashboard')
       } else {
         fetchUsers()
       }
