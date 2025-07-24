@@ -68,28 +68,74 @@ https://next-auth.js.org/warnings#debug_enabled
 [next-auth][warn][DEBUG_ENABLED] 
 https://next-auth.js.org/warnings#debug_enabled
  HEAD /profile 307 in 298ms
-s)
-<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/davian/Desktop/israel-dev/israel-kitchen/.next/cache/webpack/client-development/1.pack.gz_' -> '/Users/davian/Desktop/israel-dev/israel-kitchen/.next/cache/webpack/client-development/1.pack.gz'
- ✓ Compiled in 1706ms (347 modules)
- ✓ Compiled in 2.2s (347 modules)
- ✓ Compiled in 1453ms (347 modules)
- ✓ Compiled in 511ms (333 modules)
-<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/davian/Desktop/israel-dev/israel-kitchen/.next/cache/webpack/client-development/0.pack.gz_' -> '/Users/davian/Desktop/israel-dev/israel-kitchen/.next/cache/webpack/client-development/0.pack.gz'
- ✓ Compiled in 2s (347 modules)
- ✓ Compiled in 463ms (347 modules)
- ✓ Compiled in 497ms (347 modules)
- ✓ Compiled in 385ms (347 modules)
- ✓ Compiled in 465ms (347 modules)
- ✓ Compiled in 333ms (347 modules)
- ✓ Compiled in 228ms (347 modules)
- ✓ Compiled in 302ms (347 modules)
- ✓ Compiled in 250ms (347 modules)
- ✓ Compiled in 479ms (347 modules)
- ✓ Compiled in 190ms (347 modules)
- ✓ Compiled in 270ms (347 modules)
-<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/davian/Desktop/israel-dev/israel-kitchen/.next/cache/webpack/client-development/0.pack.gz_' -> '/Users/davian/Desktop/israel-dev/israel-kitchen/.next/cache/webpack/client-development/0.pack.gz'
- ✓ Compiled in 244ms (347 modules)
-<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/davian/Desktop/israel-dev/israel-kitchen/.next/cache/webpack/client-development/0.pack.gz_' -> '/Users/davian/Desktop/israel-dev/israel-kitchen/.next/cache/webpack/client-development/0.pack.gz'
- ✓ Compiled in 1109ms (347 modules)
- ✓ Compiled in 279ms (347 modules)
-<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/Users/davian/Desktop/israel-dev/israel-kitchen/.next/cache/webpack/client-development/0.pack.gz_' -> '/Users/davian/Desktop/israel-dev/israel-kitchen/.next/cache/webpack/client-development/0.pack.gz'
+ ○ Compiling /dashboard ...
+ ✓ Compiled /dashboard in 507ms (751 modules)
+ ⨯ TypeError: Cannot read properties of undefined (reading 'clientModules')
+    at /Users/davian/Desktop/israel-dev/israel-kitchen/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:39:25703
+    at /Users/davian/Desktop/israel-dev/israel-kitchen/node_modules/next/dist/server/lib/trace/tracer.js:191:62
+    at /Users/davian/Desktop/israel-dev/israel-kitchen/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/Users/davian/Desktop/israel-dev/israel-kitchen/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/Users/davian/Desktop/israel-dev/israel-kitchen/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/Users/davian/Desktop/israel-dev/israel-kitchen/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/Users/davian/Desktop/israel-dev/israel-kitchen/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /Users/davian/Desktop/israel-dev/israel-kitchen/node_modules/next/dist/server/lib/trace/tracer.js:122:103
+    at NoopContextManager.with (/Users/davian/Desktop/israel-dev/israel-kitchen/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/Users/davian/Desktop/israel-dev/israel-kitchen/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NextTracerImpl.trace (/Users/davian/Desktop/israel-dev/israel-kitchen/node_modules/next/dist/server/lib/trace/tracer.js:122:28)
+    at /Users/davian/Desktop/israel-dev/israel-kitchen/node_modules/next/dist/server/lib/trace/tracer.js:191:31
+    at r3 (/Users/davian/Desktop/israel-dev/israel-kitchen/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:41:1678)
+    at async doRender (/Users/davian/Desktop/israel-dev/israel-kitchen/node_modules/next/dist/server/base-server.js:1427:30)
+    at async cacheEntry.responseCache.get.routeKind (/Users/davian/Desktop/israel-dev/israel-kitchen/node_modules/next/dist/server/base-server.js:1588:28) {
+  page: '/dashboard'
+}
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 622ms (1315 modules)
+ HEAD /dashboard 500 in 1547ms[?25h
+auth][warn][DEBUG_ENABLED] 
+https://next-auth.js.org/warnings#debug_enabled
+ GET /dashboard 200 in 384ms
+ ✓ Compiled /_not-found in 295ms (1318 modules)
+[next-auth][warn][DEBUG_ENABLED] 
+https://next-auth.js.org/warnings#debug_enabled
+ GET /_next/static/chunks/app/(app)/dashboard/page.js 404 in 427ms
+ GET /favicon.ico 500 in 13ms
+ ✓ Compiled /menu in 112ms (808 modules)
+[next-auth][warn][DEBUG_ENABLED] 
+https://next-auth.js.org/warnings#debug_enabled
+ GET /menu 200 in 209ms
+ GET /favicon.ico 500 in 17ms
+ ✓ Compiled /api/auth/[...nextauth] in 194ms (834 modules)
+ ✓ Compiled (836 modules)
+[next-auth][warn][DEBUG_ENABLED] 
+https://next-auth.js.org/warnings#debug_enabled
+ GET /api/auth/session 200 in 343ms
+ GET /menu?_rsc=7s0f6 200 in 77ms
+ GET /api/meals 200 in 1368ms
+ GET /api/meals 200 in 118ms
+ GET /api/meals 200 in 231ms
+ ✓ Compiled / in 236ms (1363 modules)
+ GET /favicon.ico 500 in 22ms
+ ✓ Compiled /auth/signin in 156ms (842 modules)
+[next-auth][warn][DEBUG_ENABLED] 
+https://next-auth.js.org/warnings#debug_enabled
+ GET /auth/signin?_rsc=7jtel 200 in 22ms
+ GET /favicon.ico 500 in 12ms
+ GET /api/auth/providers 200 in 25ms
+ GET /api/auth/csrf 200 in 8ms
+🔍 NextAuth authorize called with: { email: 'admin@israelkitchen.com', hasPassword: true }
+✅ Zod validation passed for: admin@israelkitchen.com
+✅ User found: {
+  id: 'cmd6nbgy30000jo4tb743poqy',
+  email: 'admin@israelkitchen.com',
+  role: 'ADMIN',
+  status: 'ACTIVE'
+}
+🔐 Password verification result: true
+✅ NextAuth returning user: {
+  id: 'cmd6nbgy30000jo4tb743poqy',
+  email: 'admin@israelkitchen.com',
+  name: 'Admin User',
+  role: 'ADMIN'
+}
+ POST /api/auth/callback/credentials 200 in 800ms
+[?25h
