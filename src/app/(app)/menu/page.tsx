@@ -210,7 +210,7 @@ export default function MenuPage() {
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                     <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1 sm:mb-0">{meal.name}</h3>
                     <span className="text-lg font-bold text-orange-600 flex-shrink-0">
-                      ${meal.price.toFixed(2)}
+                      ${typeof meal.price === 'number' ? meal.price.toFixed(2) : Number(meal.price).toFixed(2)}
                     </span>
                   </div>
                   <p className="text-gray-600 mb-3 text-sm sm:text-base line-clamp-2">{meal.description}</p>

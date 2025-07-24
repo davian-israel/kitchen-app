@@ -26,7 +26,13 @@ export async function GET(request: NextRequest) {
       },
     })
 
-    return NextResponse.json(meals)
+    // Convert Decimal prices to numbers for frontend consumption
+    const mealsWithNumberPrices = meals.map(meal => ({
+      ...meal,
+      price: meal.price.toNumber()
+    }))
+
+    return NextResponse.json(mealsWithNumberPrices)
   } catch (error) {
     console.error('Error fetching meals:', error)
     return NextResponse.json(
