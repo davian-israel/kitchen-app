@@ -1,0 +1,231 @@
+/* Mobile Design Enhancements for Food Delivery App */
+
+/* Scrollbar hide utility for horizontal category tabs */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
+
+/* Line clamp utilities for text truncation */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Touch optimization for mobile interactions */
+.touch-manipulation {
+  touch-action: manipulation;
+}
+
+/* Backdrop blur fallback for older browsers */
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+@supports not (backdrop-filter: blur(4px)) {
+  .backdrop-blur-sm {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* Enhanced shadow for cards */
+.shadow-card {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-card-hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+              0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Smooth animations for mobile interactions */
+.transition-all-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom button hover effects */
+.btn-scale:hover {
+  transform: scale(1.05);
+}
+
+.btn-scale:active {
+  transform: scale(0.95);
+}
+
+/* Grid auto-fit for responsive cards */
+.grid-auto-fit {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+/* Mobile-specific spacing */
+.mobile-padding {
+  padding: 1.25rem; /* 20px */
+}
+
+@media (min-width: 768px) {
+  .mobile-padding {
+    padding: 1.5rem; /* 24px */
+  }
+}
+
+/* Food card specific enhancements */
+.food-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.food-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Bottom navigation specific styling */
+.bottom-nav {
+  background: linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.98) 100%);
+  border-top: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+/* Safe area insets for modern mobile devices */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* Category tab enhancements */
+.category-tab {
+  white-space: nowrap;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.category-tab-active {
+  background: linear-gradient(135deg, #000000 0%, #333333 100%);
+}
+
+/* Meal detail page specific styles */
+.meal-hero-image {
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.1) 100%);
+}
+
+.sticky-bottom-bar {
+  background: linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 100%);
+  border-top: 1px solid rgba(229, 231, 235, 0.3);
+}
+
+/* Rating stars specific styling */
+.rating-star {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+/* Feature tag enhancements */
+.feature-tag {
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  border: 1px solid rgba(209, 213, 219, 0.5);
+}
+
+/* Loading animation enhancements */
+.loading-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+/* Mobile-optimized focus states */
+.focus-mobile:focus {
+  outline: 2px solid #f97316;
+  outline-offset: 2px;
+}
+
+/* Prevent zoom on mobile form inputs */
+.no-zoom {
+  font-size: 16px;
+}
+
+@media (max-width: 767px) {
+  .no-zoom {
+    font-size: 16px;
+    transform: scale(1);
+  }
+}
+
+/* Custom webkit appearance resets for mobile */
+.btn-reset {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .food-card {
+    border: 2px solid #000;
+  }
+  
+  .category-tab-active {
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .transition-all-smooth,
+  .food-card,
+  .btn-scale {
+    transition: none;
+  }
+  
+  .loading-pulse {
+    animation: none;
+  }
+}
+
+/* Dark mode considerations */
+@media (prefers-color-scheme: dark) {
+  .mobile-design-dark {
+    background-color: #111827;
+    color: #f9fafb;
+  }
+  
+  .card-dark {
+    background-color: #1f2937;
+    border: 1px solid #374151;
+  }
+}
