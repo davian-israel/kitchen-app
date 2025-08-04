@@ -4,6 +4,7 @@
  */
 
 import { z } from 'zod'
+import { randomBytes } from 'crypto'
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
@@ -22,6 +23,16 @@ export function resetEnvCache(): void {
   validatedEnv = null
 }
 
+// SECURITY FIX: Generate cryptographically secure random secrets
+function generateSecureSecret(): string {
+  return randomBytes(32).toString('base64')
+}
+
+function generateSecureDatabaseUrl(): string {
+  const randomDb = randomBytes(8).toString('hex')
+  return `postgresql://dummy_${randomDb}:${randomBytes(16).toString('hex')}@localhost:5432/dummy_${randomDb}`
+}
+
 export function validateEnv(): Env {
   if (validatedEnv) {
     return validatedEnv
@@ -31,9 +42,9 @@ export function validateEnv(): Env {
   if (process.env.SKIP_ENV_VALIDATION === 'true') {
     const fallbackEnv: Env = {
       NODE_ENV: (process.env.NODE_ENV as any) || 'development',
-      NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'fallback-secret-for-build',
+      NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || generateSecureSecret(),
       NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
-      DATABASE_URL: process.env.DATABASE_URL || 'postgresql://dummy:dummy@localhost:5432/dummy',
+      DATABASE_URL: process.env.DATABASE_URL || generateSecureDatabaseUrl(),
       NEXTAUTH_DEBUG: process.env.NEXTAUTH_DEBUG,
       SKIP_ENV_VALIDATION: process.env.SKIP_ENV_VALIDATION,
     }
@@ -41,12 +52,12 @@ export function validateEnv(): Env {
     return fallbackEnv
   }
 
-  // Always provide fallback values to prevent build failures
+  // Always provide fallback values to prevent build failures (with secure randoms)
   const fallbackEnv: Env = {
     NODE_ENV: (process.env.NODE_ENV as any) || 'development',
-    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'fallback-secret-for-build',
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || generateSecureSecret(),
     NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
-    DATABASE_URL: process.env.DATABASE_URL || 'postgresql://dummy:dummy@localhost:5432/dummy',
+    DATABASE_URL: process.env.DATABASE_URL || generateSecureDatabaseUrl(),
     NEXTAUTH_DEBUG: process.env.NEXTAUTH_DEBUG,
     SKIP_ENV_VALIDATION: process.env.SKIP_ENV_VALIDATION,
   }

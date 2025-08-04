@@ -5,14 +5,12 @@ const nextConfig = {
     outputFileTracingRoot: undefined,
   },
   eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: true,
+    // SECURITY FIX: Only ignore during development, enable in production
+    ignoreDuringBuilds: process.env.NODE_ENV === 'development',
   },
   typescript: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has type errors.
-    ignoreBuildErrors: true,
+    // SECURITY FIX: Only ignore during development, enable in production
+    ignoreBuildErrors: process.env.NODE_ENV === 'development',
   },
   // Disable static optimization for pages that need runtime environment variables
   experimental: {
@@ -21,8 +19,36 @@ const nextConfig = {
   },
   // Skip trailing slash and other optimizations that might cause issues
   trailingSlash: false,
-  // Disable static optimization during build
-  ...(process.env.SKIP_ENV_VALIDATION === 'true' && {
+  
+  // Enhanced security headers
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains',
+          }
+        ],
+      },
+    ]
+  },
+
+  // SECURITY: Only disable validation in development/build environments  
+  ...(process.env.SKIP_ENV_VALIDATION === 'true' && process.env.NODE_ENV !== 'production' && {
     typescript: {
       ignoreBuildErrors: true,
     },
