@@ -11,6 +11,7 @@ const envSchema = z.object({
   NEXTAUTH_URL: z.string().url('NEXTAUTH_URL must be a valid URL').default('http://localhost:3000'),
   DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
   NEXTAUTH_DEBUG: z.string().optional(),
+  SKIP_ENV_VALIDATION: z.string().optional(),
 })
 
 export type Env = z.infer<typeof envSchema>
@@ -26,6 +27,20 @@ export function validateEnv(): Env {
     return validatedEnv
   }
 
+  // Skip validation if explicitly requested (for build environments)
+  if (process.env.SKIP_ENV_VALIDATION === 'true') {
+    const fallbackEnv: Env = {
+      NODE_ENV: (process.env.NODE_ENV as any) || 'development',
+      NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'fallback-secret-for-build',
+      NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
+      DATABASE_URL: process.env.DATABASE_URL || 'postgresql://dummy:dummy@localhost:5432/dummy',
+      NEXTAUTH_DEBUG: process.env.NEXTAUTH_DEBUG,
+      SKIP_ENV_VALIDATION: process.env.SKIP_ENV_VALIDATION,
+    }
+    validatedEnv = fallbackEnv
+    return fallbackEnv
+  }
+
   // Always provide fallback values to prevent build failures
   const fallbackEnv: Env = {
     NODE_ENV: (process.env.NODE_ENV as any) || 'development',
@@ -33,6 +48,7 @@ export function validateEnv(): Env {
     NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
     DATABASE_URL: process.env.DATABASE_URL || 'postgresql://dummy:dummy@localhost:5432/dummy',
     NEXTAUTH_DEBUG: process.env.NEXTAUTH_DEBUG,
+    SKIP_ENV_VALIDATION: process.env.SKIP_ENV_VALIDATION,
   }
 
   try {

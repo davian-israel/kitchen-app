@@ -15,21 +15,24 @@ RUN npm ci
 FROM base AS builder
 WORKDIR /app
 
-# Declare build-time arguments for environment variables
-ARG DATABASE_URL
-ARG NEXTAUTH_URL
-ARG NEXTAUTH_SECRET
-ARG NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-ARG STRIPE_SECRET_KEY
-ARG NEXT_PUBLIC_GOOGLE_PAY_MERCHANT_ID
+# Declare build-time arguments for environment variables with defaults
+ARG DATABASE_URL="postgresql://build:build@localhost:5432/build"
+ARG NEXTAUTH_URL="http://localhost:3000"
+ARG NEXTAUTH_SECRET="build-time-secret-fallback"
+ARG NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_build_key"
+ARG STRIPE_SECRET_KEY="sk_test_build_key"
+ARG NEXT_PUBLIC_GOOGLE_PAY_MERCHANT_ID="build_merchant_id"
 
-# Set environment variables from build args
-ENV DATABASE_URL=$DATABASE_URL
-ENV NEXTAUTH_URL=$NEXTAUTH_URL
-ENV NEXTAUTH_SECRET=$NEXTAUTH_SECRET
-ENV NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=$NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-ENV STRIPE_SECRET_KEY=$STRIPE_SECRET_KEY
-ENV NEXT_PUBLIC_GOOGLE_PAY_MERCHANT_ID=$NEXT_PUBLIC_GOOGLE_PAY_MERCHANT_ID
+# Set environment variables from build args with fallbacks
+ENV DATABASE_URL=${DATABASE_URL:-"postgresql://build:build@localhost:5432/build"}
+ENV NEXTAUTH_URL=${NEXTAUTH_URL:-"http://localhost:3000"}
+ENV NEXTAUTH_SECRET=${NEXTAUTH_SECRET:-"build-time-secret-fallback"}
+ENV NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:-"pk_test_build_key"}
+ENV STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY:-"sk_test_build_key"}
+ENV NEXT_PUBLIC_GOOGLE_PAY_MERCHANT_ID=${NEXT_PUBLIC_GOOGLE_PAY_MERCHANT_ID:-"build_merchant_id"}
+
+# Skip environment validation during build to prevent failures
+ENV SKIP_ENV_VALIDATION=true
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
