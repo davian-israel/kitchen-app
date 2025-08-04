@@ -3,6 +3,8 @@ import { auth } from '@/auth'
 import { db as prisma } from '@/lib/db'
 import { z } from 'zod'
 
+export const dynamic = 'force-dynamic'
+
 const createInventoryItemSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   category: z.string().min(1, 'Category is required'),
