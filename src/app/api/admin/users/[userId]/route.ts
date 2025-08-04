@@ -3,6 +3,8 @@ import { auth } from '@/auth'
 import { db as prisma } from '@/lib/db'
 import { z } from 'zod'
 
+export const dynamic = 'force-dynamic'
+
 const updateUserSchema = z.object({
   name: z.string().optional(),
   role: z.enum(['CUSTOMER', 'ADMIN']).optional(),

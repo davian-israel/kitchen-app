@@ -11,12 +11,10 @@ const loginSchema = z.object({
   password: z.string().min(1),
 })
 
-const env = getEnv()
-
 export const authConfig: NextAuthConfig = {
   adapter: PrismaAdapter(db),
   trustHost: true,
-  debug: isDevelopment() || env.NEXTAUTH_DEBUG === 'true',
+  debug: isDevelopment() || getEnv().NEXTAUTH_DEBUG === 'true',
   providers: [
     Credentials({
       name: 'credentials',

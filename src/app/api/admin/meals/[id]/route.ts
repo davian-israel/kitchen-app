@@ -3,6 +3,8 @@ import { z } from 'zod'
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
 
+export const dynamic = 'force-dynamic'
+
 const updateMealSchema = z.object({
   name: z.string().min(1, 'Name is required').optional(),
   description: z.string().min(1, 'Description is required').optional(),

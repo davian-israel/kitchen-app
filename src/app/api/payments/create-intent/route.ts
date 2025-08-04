@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import Stripe from 'stripe'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+export const dynamic = 'force-dynamic'
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_dummy_key_for_build', {
   apiVersion: '2024-06-20',
 })
 

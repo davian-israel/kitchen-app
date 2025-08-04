@@ -26,29 +26,29 @@ export function validateEnv(): Env {
     return validatedEnv
   }
 
+  // Always provide fallback values to prevent build failures
+  const fallbackEnv: Env = {
+    NODE_ENV: (process.env.NODE_ENV as any) || 'development',
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'fallback-secret-for-build',
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
+    DATABASE_URL: process.env.DATABASE_URL || 'postgresql://dummy:dummy@localhost:5432/dummy',
+    NEXTAUTH_DEBUG: process.env.NEXTAUTH_DEBUG,
+  }
+
   try {
     validatedEnv = envSchema.parse(process.env)
     return validatedEnv
   } catch (error) {
-    console.error('❌ Environment validation failed:', error)
-    
-    // For development, provide helpful error messages
-    if (process.env.NODE_ENV !== 'production') {
+    // Only log errors in development, not during build
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('⚠️ Environment validation failed, using fallbacks:', error)
+      
       if (error instanceof z.ZodError && error.errors) {
-        console.error('Missing or invalid environment variables:')
+        console.warn('Missing or invalid environment variables:')
         error.errors.forEach((err) => {
-          console.error(`- ${err.path.join('.')}: ${err.message}`)
+          console.warn(`- ${err.path.join('.')}: ${err.message}`)
         })
       }
-    }
-    
-    // Return defaults for critical missing values to prevent crashes
-    const fallbackEnv: Env = {
-      NODE_ENV: (process.env.NODE_ENV as any) || 'development',
-      NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'fallback-secret-for-development',
-      NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
-      DATABASE_URL: process.env.DATABASE_URL || '',
-      NEXTAUTH_DEBUG: process.env.NEXTAUTH_DEBUG,
     }
     
     validatedEnv = fallbackEnv

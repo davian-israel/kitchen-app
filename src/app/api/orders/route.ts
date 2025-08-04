@@ -6,6 +6,8 @@ import { createOrderSchema, sanitizeString } from '@/lib/validation'
 import { withErrorHandler, validateAndSanitizeInput, SecurityError, checkActionRateLimit } from '@/lib/error-handler'
 import { auditLogger, AuditAction } from '@/lib/audit-logger'
 
+export const dynamic = 'force-dynamic'
+
 
 
 export const GET = withErrorHandler(async (request: NextRequest) => {
