@@ -23,7 +23,7 @@ describe('ClientModules Error Fix - Final Verification', () => {
     ]
 
     let allFilesFixed = true
-    let issueDetails: string[] = []
+    const issueDetails: string[] = []
 
     clientFiles.forEach(relativePath => {
       const filePath = path.join(process.cwd(), relativePath)
@@ -70,7 +70,7 @@ describe('ClientModules Error Fix - Final Verification', () => {
     ]
 
     let allFilesCorrect = true
-    let issueDetails: string[] = []
+    const issueDetails: string[] = []
 
     serverFiles.forEach(relativePath => {
       const filePath = path.join(process.cwd(), relativePath)

@@ -3,6 +3,7 @@
  * Tests client/server component boundaries and navigation patterns
  */
 
+import React from 'react'
 import { jest } from '@jest/globals'
 import { render, screen, waitFor } from '@testing-library/react'
 import { useSession } from 'next-auth/react'
@@ -36,13 +37,13 @@ jest.mock('@/contexts/CartContext', () => ({
 // Mock components that have external dependencies
 jest.mock('@/components/navigation/ResponsiveHeader', () => {
   return function MockHeader() {
-    return <div data-testid="responsive-header">Header</div>
+    return React.createElement('div', { 'data-testid': 'responsive-header' }, 'Header')
   }
 })
 
 jest.mock('@/components/cart/CartButton', () => {
   return function MockCartButton() {
-    return <button data-testid="cart-button">Cart</button>
+    return React.createElement('button', { 'data-testid': 'cart-button' }, 'Cart')
   }
 })
 

@@ -55,7 +55,6 @@ describe('Client Modules Fix Integration Tests', () => {
     it('should verify client components import useRouter instead of redirect', async () => {
       // Read the source files to verify correct imports
       const fs = require('fs')
-      const path = require('path')
 
       const clientComponentPaths = [
         '/Users/davian/Desktop/israel-dev/israel-kitchen/src/app/(app)/menu/page.tsx',
@@ -347,7 +346,7 @@ describe('Client Modules Fix Integration Tests', () => {
         'next-auth/react': ['useSession'],
       }
 
-      Object.entries(modulePatterns).forEach(([moduleName, exports]) => {
+      Object.entries(modulePatterns).forEach(([, exports]) => {
         exports.forEach(exportName => {
           // Verify we can reference these exports without module resolution errors
           expect(typeof exportName).toBe('string')

@@ -313,7 +313,7 @@ describe('Authentication Integration Tests', () => {
       expect(isValidPassword).toBe(true)
 
       // Authentication should still succeed even if logging fails
-      let authenticationSucceeded = true
+      const authenticationSucceeded = true
       try {
         await mockDb.userActivityLog.create({
           data: {

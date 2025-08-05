@@ -93,7 +93,7 @@ describe('Build Validation Tests', () => {
           if (hasStripeUsage && !hasDynamic) {
             throw new Error(`Stripe route ${route} is missing 'export const dynamic = \"force-dynamic\"'`)
           }
-        } catch (error) {
+        } catch {
           // Route doesn't exist, which is fine
         }
       }
