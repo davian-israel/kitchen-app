@@ -23,36 +23,53 @@ export const authConfig: NextAuthConfig = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        console.log('🔍 NextAuth authorize called with:', { 
-          email: credentials?.email, 
-          hasPassword: !!credentials?.password 
-        })
+        // Only log in development environment
+        if (isDevelopment()) {
+          console.log('🔍 NextAuth authorize called with:', { 
+            email: credentials?.email, 
+            hasPassword: !!credentials?.password 
+          })
+        }
         
         try {
           const { email, password } = loginSchema.parse(credentials)
-          console.log('✅ Zod validation passed for:', email)
+          
+          if (isDevelopment()) {
+            console.log('✅ Zod validation passed for:', email)
+          }
 
           const user = await db.user.findUnique({
             where: { email },
           })
 
           if (!user) {
-            console.log('❌ User not found:', email)
+            if (isDevelopment()) {
+              console.log('❌ User not found:', email)
+            }
             return null
           }
 
           if (user.status === 'DISABLED') {
-            console.log('❌ User disabled:', email)
+            if (isDevelopment()) {
+              console.log('❌ User disabled:', email)
+            }
             return null
           }
 
-          console.log('✅ User found:', { id: user.id, email: user.email, role: user.role, status: user.status })
+          if (isDevelopment()) {
+            console.log('✅ User found:', { id: user.id, email: user.email, role: user.role, status: user.status })
+          }
 
           const isValidPassword = await verifyPassword(password, user.passwordHash)
-          console.log('🔐 Password verification result:', isValidPassword)
+          
+          if (isDevelopment()) {
+            console.log('🔐 Password verification result:', isValidPassword)
+          }
           
           if (!isValidPassword) {
-            console.log('❌ Password verification failed for:', email)
+            if (isDevelopment()) {
+              console.log('❌ Password verification failed for:', email)
+            }
             return null
           }
 
@@ -77,7 +94,9 @@ export const authConfig: NextAuthConfig = {
             role: user.role,
           }
 
-          console.log('✅ NextAuth returning user:', authResult)
+          if (isDevelopment()) {
+            console.log('✅ NextAuth returning user:', authResult)
+          }
           return authResult
         } catch (error) {
           console.error('❌ Authentication error:', error)

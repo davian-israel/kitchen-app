@@ -1,0 +1,28 @@
+# Production build exclusions
+src/__tests__/
+tests/
+__tests__/
+*.test.ts
+*.test.tsx
+*.test.js
+*.test.jsx
+# Build outputs
+.next/
+out/
+build/
+# Dependencies
+node_modules/
+# Environment
+.env*
+!.env.example
+# Docker
+Dockerfile*
+docker-compose*
+# IDE
+.vscode/
+.idea/
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

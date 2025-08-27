@@ -5,12 +5,12 @@ const nextConfig = {
     outputFileTracingRoot: undefined,
   },
   eslint: {
-    // SECURITY FIX: Only ignore during development, enable in production
-    ignoreDuringBuilds: process.env.NODE_ENV === 'development',
+    // SECURITY FIX: Enable in production unless explicitly skipped for build environments
+    ignoreDuringBuilds: process.env.NODE_ENV === 'development' || process.env.SKIP_ENV_VALIDATION === 'true',
   },
   typescript: {
-    // SECURITY FIX: Only ignore during development, enable in production
-    ignoreBuildErrors: process.env.NODE_ENV === 'development',
+    // SECURITY FIX: Enable in production unless explicitly skipped for build environments
+    ignoreBuildErrors: process.env.NODE_ENV === 'development' || process.env.SKIP_ENV_VALIDATION === 'true',
   },
   // Disable static optimization for pages that need runtime environment variables
   experimental: {
