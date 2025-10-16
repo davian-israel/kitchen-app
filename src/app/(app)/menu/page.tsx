@@ -3,11 +3,9 @@
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { useCart } from '@/contexts/CartContext'
 import { 
   Menu, 
-  ShoppingCart, 
   Heart, 
   Clock, 
   Star, 
@@ -64,73 +62,95 @@ const FoodItemCard = ({ item, onDetailsClick, onAddToCart }: {
   onDetailsClick: () => void
   onAddToCart: () => void
 }) => {
+  // Enhanced features with cultural elements
+  const getCulturalBadges = (features: string[]) => {
+    const badgeMap: { [key: string]: string } = {
+      'Kosher': 'badge-kosher',
+      'Fresh': 'badge-fresh',
+      'Traditional': 'badge-traditional',
+      'Spicy': 'badge-spicy',
+      'Premium': 'badge-traditional',
+      'Hearty': 'badge-fresh'
+    }
+    return features.map((feature, index) => {
+      const badgeClass = badgeMap[feature] || 'bg-gray-100 text-gray-700'
+      return (
+        <span
+          key={index}
+          className={`text-xs font-semibold px-2 py-1 rounded-full ${badgeClass.startsWith('badge-') ? badgeClass : badgeClass + ' bg-gray-100 text-gray-700'}`}
+        >
+          {feature}
+        </span>
+      )
+    })
+  }
+
   return (
-    <div className="bg-white rounded-3xl shadow-lg overflow-hidden relative cursor-pointer">
-      {/* Image and favorite icon */}
-      <div className="relative" onClick={onDetailsClick}>
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden relative cursor-pointer transition-all duration-200 hover:shadow-xl hover:scale-[1.02] card-israel">
+      {/* Image and overlays */}
+      <div className="relative aspect-square" onClick={onDetailsClick}>
         <img
-          src={item.imageUrl || `https://placehold.co/600x400/D4EDDA/155724?text=${encodeURIComponent(item.name)}`}
+          src={item.imageUrl || `https://placehold.co/400x400/E3F2FD/0038A8?text=${encodeURIComponent(item.name)}`}
           alt={item.name}
-          className="w-full h-48 object-cover"
+          className="w-full h-full object-cover"
         />
+        
+        {/* Favorite button */}
         <button 
-          className="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md"
+          className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-md hover:bg-white transition-all"
           onClick={(e) => {
             e.stopPropagation()
             // Toggle favorite logic here
           }}
         >
-          <Heart size={18} className={item.isFavorite ? 'text-red-500' : 'text-gray-400'} />
+          <Heart 
+            size={16} 
+            className={`transition-colors ${item.isFavorite ? 'text-red-500 fill-red-500' : 'text-gray-400'}`} 
+          />
         </button>
         
         {/* Rating badge */}
         {item.rating && (
-          <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-sm px-2 py-1 rounded-full flex items-center">
-            <Star size={14} className="text-yellow-400 mr-1" fill="currentColor" />
+          <div className="absolute top-2 left-2 bg-black/80 backdrop-blur-sm px-2 py-1 rounded-full flex items-center">
+            <Star size={12} className="text-yellow-400 mr-1" fill="currentColor" />
             <span className="text-white text-xs font-semibold">{item.rating.toFixed(1)}</span>
           </div>
         )}
         
         {/* Prep time badge */}
         {item.prepTime && (
-          <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full flex items-center">
-            <Clock size={12} className="text-gray-600 mr-1" />
-            <span className="text-gray-800 text-xs font-semibold">{item.prepTime} min</span>
+          <div className="absolute bottom-2 left-2 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full flex items-center">
+            <Clock size={10} className="text-gray-600 mr-1" />
+            <span className="text-gray-800 text-xs font-medium">{item.prepTime}min</span>
           </div>
         )}
       </div>
 
       {/* Card content */}
-      <div className="p-4 flex flex-col" onClick={onDetailsClick}>
-        <h3 className="text-xl font-bold text-gray-800 mb-1">{item.name}</h3>
-        <p className="text-gray-500 text-sm mb-3 line-clamp-2">{item.description}</p>
+      <div className="p-3" onClick={onDetailsClick}>
+        <h3 className="text-base font-bold text-gray-800 mb-1 line-clamp-1">{item.name}</h3>
+        <p className="text-gray-500 text-xs mb-2 line-clamp-2">{item.description}</p>
         
-        {/* Features/Tags */}
+        {/* Cultural Features/Tags */}
         {item.features && item.features.length > 0 && (
           <div className="flex flex-wrap gap-1 mb-3">
-            {item.features.slice(0, 3).map((feature, index) => (
-              <span
-                key={index}
-                className="bg-gray-100 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full"
-              >
-                {feature}
-              </span>
-            ))}
+            {getCulturalBadges(item.features.slice(0, 2))}
           </div>
         )}
         
-        <div className="flex justify-between items-center mt-auto">
-          <span className="text-2xl font-extrabold text-gray-800">
-            ${typeof item.price === 'number' ? item.price.toFixed(2) : Number(item.price).toFixed(2)}
+        {/* Price and Add to Cart */}
+        <div className="flex justify-between items-center">
+          <span className="text-lg font-bold text-gray-800">
+            ₪{typeof item.price === 'number' ? item.price.toFixed(0) : Number(item.price).toFixed(0)}
           </span>
           <button 
-            className="bg-black text-white px-4 py-2 rounded-full shadow-lg font-medium transition-transform hover:scale-105"
+            className="bg-black text-white px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 hover:bg-gray-800 hover:scale-105 active:scale-95"
             onClick={(e) => {
               e.stopPropagation()
               onAddToCart()
             }}
           >
-            Add to Cart
+            Add +
           </button>
         </div>
       </div>
@@ -339,15 +359,15 @@ export default function MenuPage() {
 
   const getRandomFeatures = (category: string): string[] => {
     const featureOptions = {
-      'Main Dish': ['Fresh', 'Spicy', 'Traditional', 'Premium', 'Hearty'],
-      'Appetizer': ['Fresh', 'Light', 'Crispy', 'Savory'],
-      'Dessert': ['Sweet', 'Fresh', 'Traditional', 'Rich'],
-      'Drink': ['Fresh', 'Cold', 'Traditional', 'Refreshing'],
-      'default': ['Fresh', 'Traditional', 'Premium']
+      'Main Dish': ['Kosher', 'Traditional', 'Spicy', 'Fresh', 'Hearty', 'Premium'],
+      'Appetizer': ['Fresh', 'Traditional', 'Kosher', 'Light', 'Crispy'],
+      'Dessert': ['Traditional', 'Fresh', 'Premium', 'Kosher'],
+      'Drink': ['Fresh', 'Traditional', 'Kosher', 'Premium'],
+      'default': ['Fresh', 'Traditional', 'Kosher', 'Premium']
     }
     
     const features = featureOptions[category as keyof typeof featureOptions] || featureOptions.default
-    const count = Math.floor(Math.random() * 3) + 1 // 1-3 features
+    const count = Math.floor(Math.random() * 2) + 1 // 1-2 features for better display
     return features.sort(() => 0.5 - Math.random()).slice(0, count)
   }
 
@@ -410,65 +430,78 @@ export default function MenuPage() {
 
   // Show main menu page
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
-      {/* Top Header */}
-      <div className="p-5 flex justify-between items-center">
-        <Menu size={24} />
-        <div className="relative">
-          <ShoppingCart size={24} onClick={() => openCart()} className="cursor-pointer" />
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      {/* Hero Section */}
+      <div className="bg-gradient-to-br from-blue-600 to-orange-500 cultural-pattern">
+        <div className="px-5 py-8 text-center">
+          <h1 className="text-3xl font-bold text-white mb-2">
+            Delicious Israel Food
+          </h1>
+          <p className="text-white/90 text-lg mb-1">
+            Authentic Israel Kitchen
+          </p>
+          <p className="text-white/80 text-sm">
+            We make fresh and healthy authentic Israel cuisine
+          </p>
         </div>
       </div>
 
-      {/* Title section */}
-      <div className="p-5 pt-0">
-        <h1 className="text-3xl font-bold text-gray-800">Delicious Food</h1>
-        <p className="text-gray-500">We made fresh and healthy Israeli food</p>
-      </div>
-
       {/* Category Tabs */}
-      <div className="overflow-x-auto flex px-5 py-2 space-x-4 mb-4 scrollbar-hide">
-        {menuCategories.map((category, index) => (
-          <button
-            key={index}
-            onClick={() => setSelectedCategory(category)}
-            className={`flex-shrink-0 px-6 py-3 rounded-full font-semibold transition-all duration-300
-              ${selectedCategory === category
-                ? 'bg-black text-white shadow-lg'
-                : 'bg-white text-gray-700 border border-gray-300'
+      <div className="bg-white shadow-sm">
+        <div className="overflow-x-auto flex px-5 py-4 space-x-3 scrollbar-hide">
+          {menuCategories.map((category, index) => (
+            <button
+              key={index}
+              onClick={() => setSelectedCategory(category)}
+              className={`flex-shrink-0 px-6 py-3 rounded-full font-semibold text-sm transition-all duration-200 ${
+                selectedCategory === category
+                  ? 'bg-black text-white shadow-md transform scale-105'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'
               }`}
-          >
-            {category}
-          </button>
-        ))}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Food Items Grid */}
-      <div className="flex-grow grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5">
-        {filteredMeals.map((item) => (
-          <FoodItemCard
-            key={item.id}
-            item={item}
-            onDetailsClick={() => handleItemClick(item)}
-            onAddToCart={() => handleAddToCart(item)}
-          />
-        ))}
+      <div className="flex-grow px-5 py-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredMeals.map((item) => (
+            <FoodItemCard
+              key={item.id}
+              item={item}
+              onDetailsClick={() => handleItemClick(item)}
+              onAddToCart={() => handleAddToCart(item)}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Empty state */}
       {filteredMeals.length === 0 && !isLoading && (
-        <div className="flex-grow flex items-center justify-center p-5">
-          <div className="text-center">
-            <div className="text-6xl mb-4">🍽️</div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">No meals available</h2>
-            <p className="text-gray-600 mb-6">
-              Check back soon for delicious Israeli cuisine!
+        <div className="flex-grow flex items-center justify-center p-8">
+          <div className="text-center bg-white rounded-2xl p-8 shadow-lg max-w-sm">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="text-2xl">🍽️</div>
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">No meals available</h2>
+            <p className="text-gray-600 text-sm mb-4">
+              Check back soon for delicious Israel cuisine!
             </p>
+            <button 
+              onClick={() => setSelectedCategory('Main Menu')}
+              className="bg-black text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors"
+            >
+              Browse All Categories
+            </button>
           </div>
         </div>
       )}
 
       {/* Bottom Navigation Bar */}
-      <div className="sticky bottom-0 bg-white shadow-2xl p-4 rounded-t-3xl flex justify-around items-center border-t border-gray-200">
+      <div className="sticky bottom-0 bg-white shadow-2xl p-4 rounded-t-3xl flex justify-around items-center border-t border-gray-100">
         <BottomNavItem 
           icon={<Home size={24} />} 
           text="Home" 

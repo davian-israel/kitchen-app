@@ -36,11 +36,11 @@ export async function POST(request: NextRequest) {
     // - csv-writer for CSV files
 
     let csvContent = ''
-    let filename = `${reportType}-report-${dateRange}.csv`
+    const filename = `${reportType}-report-${dateRange}.csv`
 
     // Calculate date range for data fetching
     const now = new Date()
-    let startDate = new Date()
+    const startDate = new Date()
     
     switch (dateRange) {
       case '7d':

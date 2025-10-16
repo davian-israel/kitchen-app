@@ -44,7 +44,7 @@
    - Creamy chickpea dip topped with olive oil and served with warm pita
    - Allergens: Sesame
 
-4. **Israeli Salad** - $7.99 (Salad)
+4. **Israel Salad** - $7.99 (Salad)
    - Fresh diced tomatoes, cucumbers, and herbs with lemon dressing
    - Allergens: None
 

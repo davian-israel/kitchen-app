@@ -446,7 +446,7 @@ describe('Menu Page Integration Tests', () => {
       
       await waitFor(() => {
         expect(screen.getByText('Menu Coming Soon')).toBeInTheDocument()
-        expect(screen.getByText('We\'re preparing our delicious israel dishes for you. Check back soon!')).toBeInTheDocument()
+        expect(screen.getByText('We\'re preparing our delicious Israel dishes for you. Check back soon!')).toBeInTheDocument()
       })
     })
   })

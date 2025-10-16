@@ -126,21 +126,172 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Color Palette - Israel Kitchen Design System */
+  --color-primary-black: #000000;
+  --color-secondary-white: #FFFFFF;
+  --color-warm-white: #FEFEFE;
+  --color-text-primary: #000000;
+  --color-text-secondary: #666666;
+  --color-accent-yellow: #FFD700;
+  --color-israel-blue: #0038A8;
+  --color-mediterranean-orange: #FF6B35;
+  --color-neutral-light-gray: #F5F5F5;
+  --color-neutral-medium-gray: #E0E0E0;
+  --color-neutral-very-light-gray: #F8F9FA;
+  
+  /* Design System Variables */
+  --background: var(--color-secondary-white);
+  --foreground: var(--color-text-primary);
+  --background-warm: var(--color-warm-white);
+  
+  /* Typography */
+  --font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-hebrew: 'Noto Sans Hebrew', Arial Hebrew, sans-serif;
+  
+  /* Spacing System - 8px base unit */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  
+  /* Border Radius */
+  --border-radius-sm: 6px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --border-radius-xl: 24px;
+  --border-radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-large: 0 10px 25px rgba(0, 0, 0, 0.15);
+  --shadow-israel-blue: 0 4px 14px rgba(0, 56, 168, 0.2);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Modern CSS Reset and Base Styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
+  margin: 0;
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-family-primary);
+  font-feature-settings: 'kern' 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  line-height: 1.6;
+}
+
+/* Hebrew Typography Support */
+[lang="he"], .hebrew {
+  font-family: var(--font-family-hebrew);
+  direction: rtl;
+  text-align: right;
+}
+
+/* Israel Kitchen Design System Components */
+.israel-gradient {
+  background: linear-gradient(135deg, var(--color-israel-blue) 0%, var(--color-mediterranean-orange) 100%);
+}
+
+.cultural-pattern {
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(0, 56, 168, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(255, 107, 53, 0.05) 0%, transparent 50%);
+}
+
+/* Enhanced Button Styles */
+.btn-primary-israel {
+  background: var(--color-primary-black);
+  color: var(--color-secondary-white);
+  border-radius: var(--border-radius-full);
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary-israel:hover {
+  background: #333333;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-medium);
+}
+
+.btn-secondary-israel {
+  background: transparent;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-neutral-medium-gray);
+  border-radius: var(--border-radius-full);
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-secondary-israel:hover {
+  border-color: var(--color-israel-blue);
+  color: var(--color-israel-blue);
+}
+
+/* Card Components */
+.card-israel {
+  background: var(--color-secondary-white);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-subtle);
+  transition: all 0.2s ease;
+  overflow: hidden;
+}
+
+.card-israel:hover {
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-2px);
+}
+
+/* Cultural Badge Styles */
+.badge-kosher {
+  background: #E3F2FD;
+  color: var(--color-israel-blue);
+  padding: 6px 12px;
+  border-radius: var(--border-radius-full);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-fresh {
+  background: #E8F5E9;
+  color: #2E7D32;
+  padding: 6px 12px;
+  border-radius: var(--border-radius-full);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-traditional {
+  background: #FFF8F0;
+  color: var(--color-mediterranean-orange);
+  padding: 6px 12px;
+  border-radius: var(--border-radius-full);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-spicy {
+  background: #FFF3E0;
+  color: #F57C00;
+  padding: 6px 12px;
+  border-radius: var(--border-radius-full);
+  font-size: 12px;
+  font-weight: 600;
 }
 
 @layer utilities {

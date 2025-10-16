@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { User, Mail, Lock, CheckCircle, Star, Heart } from 'lucide-react'
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -103,130 +104,214 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-red-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Create your account
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-white to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-20 left-10 text-orange-100 opacity-20">
+          <Heart size={24} />
+        </div>
+        <div className="absolute top-40 right-20 text-blue-100 opacity-20">
+          <Star size={32} />
+        </div>
+        <div className="absolute bottom-20 left-20 text-orange-100 opacity-20">
+          <Star size={28} />
+        </div>
+        <div className="absolute bottom-40 right-10 text-blue-100 opacity-20">
+          <Heart size={20} />
+        </div>
+      </div>
+
+      <div className="max-w-md w-full space-y-8 relative z-10">
+        {/* Header */}
+        <div className="text-center">
+          <div className="flex justify-center items-center mb-6">
+            <div className="bg-white p-3 rounded-full shadow-lg">
+              <Star className="w-8 h-8 text-orange-500" fill="currentColor" />
+            </div>
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Israel Kitchen</h1>
+          <h2 className="text-xl font-semibold text-gray-800 mb-1">
+            Join the Israel Kitchen Family
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
-            <Link
-              href="/auth/signin"
-              className="font-medium text-orange-600 hover:text-orange-500"
-            >
-              sign in to your existing account
-            </Link>
+          <p className="text-sm text-gray-600 mb-2">
+            Create Your Account
+          </p>
+          <p className="text-xs text-gray-500">
+            Experience authentic Israel cuisine delivered to your door
           </p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            <div>
+
+        {/* Form Card */}
+        <div className="bg-white rounded-2xl shadow-xl p-8 space-y-6">
+          <form className="space-y-5" onSubmit={handleSubmit}>
+            {/* Full Name Field */}
+            <div className="space-y-2">
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                 Full Name
               </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                autoComplete="name"
-                required
-                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-                placeholder="Enter your full name"
-                value={formData.name}
-                onChange={handleChange}
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <User className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  required
+                  className="appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm transition-colors"
+                  placeholder="Enter your full name"
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+              </div>
               {errors.name && (
-                <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+                <p className="text-xs text-red-600 mt-1">{errors.name}</p>
               )}
             </div>
 
-            <div>
+            {/* Email Field */}
+            <div className="space-y-2">
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email Address
               </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-                placeholder="Enter your email address"
-                value={formData.email}
-                onChange={handleChange}
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Mail className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  className="appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm transition-colors"
+                  placeholder="your@email.com"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </div>
               {errors.email && (
-                <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                <p className="text-xs text-red-600 mt-1">{errors.email}</p>
               )}
             </div>
 
-            <div>
+            {/* Password Field */}
+            <div className="space-y-2">
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
               </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="new-password"
-                required
-                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-                placeholder="Enter your password"
-                value={formData.password}
-                onChange={handleChange}
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  className="appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm transition-colors"
+                  placeholder="Create a strong password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+              </div>
               {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+                <p className="text-xs text-red-600 mt-1">{errors.password}</p>
               )}
             </div>
 
-            <div>
+            {/* Confirm Password Field */}
+            <div className="space-y-2">
               <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
                 Confirm Password
               </label>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                autoComplete="new-password"
-                required
-                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-                placeholder="Confirm your password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <CheckCircle className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  className="appearance-none block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 text-sm transition-colors"
+                  placeholder="Confirm your password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                />
+              </div>
               {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
+                <p className="text-xs text-red-600 mt-1">{errors.confirmPassword}</p>
               )}
             </div>
-          </div>
 
-          {errors.general && (
-            <div className="rounded-md bg-red-50 p-4">
-              <div className="text-sm text-red-700">{errors.general}</div>
+            {/* General Error */}
+            {errors.general && (
+              <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+                <div className="text-sm text-red-700">{errors.general}</div>
+              </div>
+            )}
+
+            {/* Terms and Privacy */}
+            <div className="text-xs text-gray-500 text-center">
+              By creating an account, you agree to our{' '}
+              <Link href="/terms" className="text-blue-600 hover:underline">
+                Terms of Service
+              </Link>{' '}
+              and{' '}
+              <Link href="/privacy" className="text-blue-600 hover:underline">
+                Privacy Policy
+              </Link>
             </div>
-          )}
 
-          <div>
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex justify-center items-center py-3 px-4 border border-transparent text-sm font-semibold rounded-full text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.02]"
             >
-              {isLoading ? 'Creating account...' : 'Create account'}
+              {isLoading ? (
+                <div className="flex items-center">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Creating your account...
+                </div>
+              ) : (
+                'Join the Family'
+              )}
             </button>
-          </div>
+          </form>
 
-          <div className="text-center">
-            <Link
-              href="/"
-              className="font-medium text-orange-600 hover:text-orange-500"
-            >
-              ← Back to home
-            </Link>
+          {/* Footer Links */}
+          <div className="space-y-4">
+            <div className="text-center">
+              <Link
+                href="/auth/signin"
+                className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+              >
+                Already have an account? <span className="font-semibold">Sign in</span>
+              </Link>
+            </div>
+            
+            <div className="text-center">
+              <Link
+                href="/"
+                className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 transition-colors"
+              >
+                ← Back to home
+              </Link>
+            </div>
           </div>
-        </form>
+        </div>
+
+        {/* Cultural Element */}
+        <div className="text-center">
+          <p className="text-xs text-gray-500">
+            Israel Kitchen Family
+          </p>
+        </div>
       </div>
     </div>
   )

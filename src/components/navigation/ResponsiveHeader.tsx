@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
+import { Star, User, LogOut } from 'lucide-react'
 import MobileNav from './MobileNav'
 import CartButton from '@/components/cart/CartButton'
 
@@ -40,31 +41,40 @@ export default function ResponsiveHeader({
   const homeLink = isAdminRoute ? '/admin' : '/dashboard'
 
   return (
-    <nav className="bg-white shadow-sm border-b sticky top-0 z-30">
+    <nav className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           {/* Logo/Title */}
           <div className="flex items-center space-x-8">
             <Link 
               href={homeLink} 
-              className="text-xl font-bold text-orange-600 hover:text-orange-700 transition-colors"
+              className="flex items-center space-x-2 group transition-all duration-200"
             >
-              {title}
-              {isAdminRoute && <span className="text-sm font-normal text-gray-500 ml-2">Admin</span>}
+              <div className="bg-gradient-to-br from-blue-600 to-orange-500 p-2 rounded-full group-hover:scale-105 transition-transform">
+                <Star className="w-5 h-5 text-white" fill="currentColor" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                  {title}
+                </h1>
+                {isAdminRoute && (
+                  <span className="text-xs font-medium text-orange-500">Admin Portal</span>
+                )}
+              </div>
             </Link>
             
             {/* Desktop Navigation */}
-            <div className="hidden md:flex space-x-6">
+            <div className="hidden md:flex space-x-1">
               {links.map((link) => {
                 const isActive = pathname === link.href
                 return (
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`font-medium transition-colors ${
+                    className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-200 ${
                       isActive
-                        ? 'text-orange-600'
-                        : 'text-gray-700 hover:text-orange-600'
+                        ? 'bg-black text-white shadow-md'
+                        : 'text-gray-700 hover:bg-gray-100 hover:text-black'
                     }`}
                   >
                     {link.label}
@@ -78,31 +88,32 @@ export default function ResponsiveHeader({
           <div className="hidden md:flex items-center space-x-4">
             {showCart && !isAdminRoute && <CartButton />}
             
-            {/* User Info */}
-            <div className="flex items-center space-x-3">
-              <div className="text-right">
-                <p className="text-sm font-medium text-gray-900">
-                  {session?.user?.name || 'User'}
+            {/* User Profile */}
+            <div className="flex items-center space-x-3 bg-gray-50 rounded-full pr-2 py-1">
+              <div className="text-right px-3">
+                <p className="text-sm font-semibold text-gray-900">
+                  Hello {session?.user?.name?.split(' ')[0] || 'User'}!
                 </p>
                 <p className="text-xs text-gray-600">
-                  {session?.user?.email}
+                  {isAdminRoute ? 'Administrator' : 'Customer'}
                 </p>
               </div>
               
-              <div className="w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-orange-500 rounded-full flex items-center justify-center shadow-md">
                 <span className="text-white font-bold text-sm">
                   {session?.user?.name?.charAt(0) || session?.user?.email?.charAt(0) || 'U'}
                 </span>
               </div>
             </div>
 
-            {/* Sign Out */}
+            {/* Sign Out Button */}
             <form action="/api/auth/signout" method="post">
               <button
                 type="submit"
-                className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                className="flex items-center space-x-2 bg-gray-100 hover:bg-red-50 text-gray-700 hover:text-red-600 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border border-transparent hover:border-red-200"
               >
-                Sign Out
+                <LogOut className="w-4 h-4" />
+                <span>Sign Out</span>
               </button>
             </form>
           </div>
@@ -111,6 +122,9 @@ export default function ResponsiveHeader({
           <MobileNav userRole={session?.user?.role} />
         </div>
       </div>
+      
+      {/* Cultural Accent Line */}
+      <div className="h-1 bg-gradient-to-r from-blue-600 via-white to-orange-500"></div>
     </nav>
   )
 }

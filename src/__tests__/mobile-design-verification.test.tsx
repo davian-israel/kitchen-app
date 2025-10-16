@@ -40,7 +40,7 @@ const mockMealsData = [
   {
     id: '1',
     name: 'Shakshuka',
-    description: 'Traditional Israeli breakfast dish with eggs poached in spiced tomato sauce',
+    description: 'Traditional Israel breakfast dish with eggs poached in spiced tomato sauce',
     price: 14.99,
     category: 'Main Dish',
     imageUrl: 'https://example.com/shakshuka.jpg',
