@@ -7,7 +7,7 @@ import ResponsiveHeader from '@/components/navigation/ResponsiveHeader'
 export default async function AdminDashboardPage() {
   const session = await auth()
 
-  if (!session || session.user.role !== 'ADMIN') {
+  if (!session || !(session as any)?.user?.role || (session as any).user.role !== 'ADMIN') {
     redirect('/dashboard')
   }
 
@@ -38,7 +38,7 @@ export default async function AdminDashboardPage() {
             </div>
             <div className="hidden lg:block text-right">
               <p className="text-sm text-white/80">Welcome back</p>
-              <p className="font-semibold">{session.user.name || session.user.email}</p>
+              <p className="font-semibold">{(session as any)?.user?.name || (session as any)?.user?.email}</p>
             </div>
           </div>
         </div>

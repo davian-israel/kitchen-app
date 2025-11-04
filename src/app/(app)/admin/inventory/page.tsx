@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -13,7 +13,6 @@ import {
   TrendingDown, 
   Edit, 
   Trash2,
-  Filter,
   Download,
   RefreshCw
 } from 'lucide-react'
@@ -40,13 +39,6 @@ interface InventoryItem {
   }>
 }
 
-const transactionTypeColors = {
-  STOCK_IN: 'text-green-600 bg-green-100',
-  STOCK_OUT: 'text-red-600 bg-red-100',
-  ADJUSTMENT: 'text-blue-600 bg-blue-100',
-  EXPIRED: 'text-orange-600 bg-orange-100',
-  WASTE: 'text-gray-600 bg-gray-100'
-}
 
 export default function InventoryPage() {
   const { data: session, status } = useSession()
@@ -78,33 +70,9 @@ export default function InventoryPage() {
         fetchInventory()
       }
     }
-  }, [session])
+  }, [session, router])
 
-  useEffect(() => {
-    filterItems()
-  }, [items, searchTerm, selectedCategory, showLowStock, showExpiring])
-
-  const fetchInventory = async () => {
-    try {
-      setIsRefreshing(true)
-      const response = await fetch('/api/admin/inventory')
-      if (response.ok) {
-        const data = await response.json()
-        setItems(data)
-        setError('')
-      } else {
-        setError('Failed to fetch inventory')
-      }
-    } catch (error) {
-      console.error('Error fetching inventory:', error)
-      setError('Failed to load inventory')
-    } finally {
-      setIsLoading(false)
-      setIsRefreshing(false)
-    }
-  }
-
-  const filterItems = () => {
+  const filterItems = useCallback(() => {
     let filtered = items
 
     // Search filter
@@ -139,6 +107,30 @@ export default function InventoryPage() {
     }
 
     setFilteredItems(filtered)
+  }, [items, searchTerm, selectedCategory, showLowStock, showExpiring])
+
+  useEffect(() => {
+    filterItems()
+  }, [filterItems])
+
+  const fetchInventory = async () => {
+    try {
+      setIsRefreshing(true)
+      const response = await fetch('/api/admin/inventory')
+      if (response.ok) {
+        const data = await response.json()
+        setItems(data)
+        setError('')
+      } else {
+        setError('Failed to fetch inventory')
+      }
+    } catch (error) {
+      console.error('Error fetching inventory:', error)
+      setError('Failed to load inventory')
+    } finally {
+      setIsLoading(false)
+      setIsRefreshing(false)
+    }
   }
 
   const categories = ['ALL', ...new Set(items.map(item => item.category))]

@@ -132,16 +132,17 @@ export async function middleware(request: NextRequest) {
 
   // Check admin routes
   if (adminRoutes.some(route => pathname.startsWith(route))) {
-    if (session.user.role !== 'ADMIN') {
+    const userRole = (session as any)?.user?.role;
+    if (!userRole || userRole !== 'ADMIN') {
       // Log unauthorized admin access attempt
       await auditLogger.logSecurity(
         AuditAction.UNAUTHORIZED_ACCESS,
-        session.user.id,
+        (session as any)?.user?.id || 'anonymous',
         request,
         { 
           path: pathname, 
           reason: 'insufficient_privileges', 
-          userRole: session.user.role 
+          userRole: userRole 
         }
       )
 
@@ -164,7 +165,7 @@ export async function middleware(request: NextRequest) {
     if (pathname.startsWith('/admin')) {
       await auditLogger.logAdmin(
         AuditAction.ADMIN_ACCESS,
-        session.user.id,
+        (session as any)?.user?.id || 'admin',
         request,
         undefined,
         { path: pathname }
@@ -173,10 +174,11 @@ export async function middleware(request: NextRequest) {
   }
 
   // Check if user account is disabled
-  if (session.user.status === 'DISABLED') {
+  const userStatus = (session as any)?.user?.status;
+  if (userStatus === 'DISABLED') {
     await auditLogger.logSecurity(
       AuditAction.UNAUTHORIZED_ACCESS,
-      session.user.id,
+      (session as any)?.user?.id || 'disabled-user',
       request,
       { path: pathname, reason: 'account_disabled' }
     )

@@ -78,7 +78,7 @@ export default function EditMealPage() {
       } else {
         setErrors({ general: 'Failed to load meal' })
       }
-    } catch (error) {
+    } catch {
       setErrors({ general: 'An error occurred while loading the meal' })
     } finally {
       setIsLoadingMeal(false)

@@ -11,7 +11,7 @@ export default async function DashboardPage() {
     return null // This shouldn't happen due to layout, but safety check
   }
 
-  const userName = session.user.name?.split(' ')[0] || 'Friend'
+  const userName = (session as any)?.user?.name?.split(' ')[0] || 'Friend'
 
   return (
     <div className="min-h-screen bg-gray-50">

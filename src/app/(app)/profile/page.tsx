@@ -33,7 +33,7 @@ export default async function ProfilePage() {
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-600">
-                {session.user.name || session.user.email}
+                {(session as any)?.user?.name || (session as any)?.user?.email}
               </span>
               <form action="/api/auth/signout" method="post">
                 <button
