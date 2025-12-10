@@ -1,0 +1,35 @@
+{
+  "projectName": "Israel Kitchen",
+  "projectPath": "/Users/davian/Desktop/israel-dev/israel-kitchen",
+  "tasksDirectory": ".tasks",
+  "settings": {
+    "autoSave": true,
+    "defaultPriority": "medium",
+    "enableNotifications": true,
+    "theme": "default"
+  },
+  "categories": [
+    "Development",
+    "Deployment",
+    "Bug Fix",
+    "Feature",
+    "Documentation",
+    "Testing",
+    "Database",
+    "Frontend",
+    "Backend",
+    "DevOps"
+  ],
+  "integrations": {
+    "github": {
+      "enabled": true,
+      "repository": "davian-israel/kitchen-app",
+      "branch": "feature/release-2"
+    },
+    "vercel": {
+      "enabled": true,
+      "projectName": "israel-kitchen"
+    }
+  }
+}
+

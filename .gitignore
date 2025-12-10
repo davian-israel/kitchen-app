@@ -66,3 +66,8 @@ config/keys/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# TaskMaster AI
+.tasks/*.json
+.tasks/*.db
+.tasks/cache/
