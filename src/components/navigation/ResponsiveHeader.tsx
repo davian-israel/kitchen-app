@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
-import { Star, User, LogOut } from 'lucide-react'
+import { Star, User, LogOut, ChefHat } from 'lucide-react'
 import MobileNav from './MobileNav'
 import CartButton from '@/components/cart/CartButton'
 
@@ -20,7 +20,9 @@ export default function ResponsiveHeader({
   const pathname = usePathname()
   
   const isAdmin = session?.user?.role === 'ADMIN'
+  const isKitchenStaff = session?.user?.role === 'KITCHEN_STAFF'
   const isAdminRoute = pathname?.startsWith('/admin')
+  const isKitchenRoute = pathname?.startsWith('/kitchen')
 
   // Customer navigation links
   const customerLinks = [
@@ -37,8 +39,27 @@ export default function ResponsiveHeader({
     { href: '/admin/users', label: 'Users' },
   ]
 
-  const links = isAdminRoute ? adminLinks : customerLinks
-  const homeLink = isAdminRoute ? '/admin' : '/dashboard'
+  // Kitchen staff navigation links
+  const kitchenLinks = [
+    { href: '/kitchen/orders', label: 'Kitchen Orders' },
+    { href: '/profile', label: 'Profile' },
+  ]
+
+  // Determine which links to show
+  let links = customerLinks
+  if (isAdminRoute) {
+    links = adminLinks
+  } else if (isKitchenRoute || isKitchenStaff) {
+    links = kitchenLinks
+  }
+  
+  // Determine home link based on user role and current route
+  let homeLink = '/dashboard'
+  if (isAdminRoute) {
+    homeLink = '/admin'
+  } else if (isKitchenRoute || isKitchenStaff) {
+    homeLink = '/kitchen/orders'
+  }
 
   return (
     <nav className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-30">
@@ -59,6 +80,9 @@ export default function ResponsiveHeader({
                 </h1>
                 {isAdminRoute && (
                   <span className="text-xs font-medium text-orange-500">Admin Portal</span>
+                )}
+                {isKitchenRoute && (
+                  <span className="text-xs font-medium text-blue-500">Kitchen Portal</span>
                 )}
               </div>
             </Link>
@@ -119,7 +143,7 @@ export default function ResponsiveHeader({
           </div>
 
           {/* Mobile Navigation */}
-          <MobileNav userRole={session?.user?.role as 'CUSTOMER' | 'ADMIN' | undefined} />
+          <MobileNav userRole={session?.user?.role as 'CUSTOMER' | 'ADMIN' | 'KITCHEN_STAFF' | undefined} />
         </div>
       </div>
       

@@ -3,12 +3,12 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Menu, X, Home, UtensilsCrossed, Package, User, LogOut } from 'lucide-react'
+import { Menu, X, Home, UtensilsCrossed, Package, User, LogOut, ChefHat } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import CartButton from '@/components/cart/CartButton'
 
 interface MobileNavProps {
-  userRole?: 'CUSTOMER' | 'ADMIN'
+  userRole?: 'CUSTOMER' | 'ADMIN' | 'KITCHEN_STAFF'
 }
 
 export default function MobileNav({ userRole }: MobileNavProps) {
@@ -31,7 +31,17 @@ export default function MobileNav({ userRole }: MobileNavProps) {
     { href: '/admin/users', label: 'Users', icon: User },
   ]
 
-  const links = userRole === 'ADMIN' ? adminLinks : customerLinks
+  const kitchenStaffLinks = [
+    { href: '/kitchen/orders', label: 'Kitchen Orders', icon: ChefHat },
+    { href: '/profile', label: 'Profile', icon: User },
+  ]
+
+  let links = customerLinks
+  if (userRole === 'ADMIN') {
+    links = adminLinks
+  } else if (userRole === 'KITCHEN_STAFF') {
+    links = kitchenStaffLinks
+  }
 
   const toggleMenu = () => setIsOpen(!isOpen)
   const closeMenu = () => setIsOpen(false)

@@ -67,6 +67,14 @@ async function main() {
       UserRole.CUSTOMER
     )
 
+    // Create kitchen staff user
+    const kitchenStaff = await createUser(
+      'kitchen@israelkitchen.com',
+      'Kitchen Staff',
+      'kitchen123',
+      UserRole.KITCHEN_STAFF
+    )
+
     console.log('')
 
     // Create sample meals
@@ -236,6 +244,7 @@ async function main() {
     console.log('🔐 Login Credentials:')
     console.log(`   👨‍💼 Admin: admin@israelkitchen.com (password: admin123)`)
     console.log(`   👤 Customer: customer@example.com (password: customer123)`)
+    console.log(`   👨‍🍳 Kitchen Staff: kitchen@israelkitchen.com (password: kitchen123)`)
     console.log('')
     console.log('📊 Data Created:')
     console.log(`   🍽️ Meals: ${mealsCreated}/${meals.length}`)
@@ -244,6 +253,7 @@ async function main() {
     console.log('🚀 You can now:')
     console.log('   • Login as admin to manage the system')
     console.log('   • Login as customer to browse menu and place orders')
+    console.log('   • Login as kitchen staff to manage order preparation')
     console.log('   • Test all application features')
 
   } catch (error) {

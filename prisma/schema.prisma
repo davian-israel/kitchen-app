@@ -32,6 +32,7 @@ model User {
 enum UserRole {
   CUSTOMER
   ADMIN
+  KITCHEN_STAFF
 }
 
 enum UserStatus {
