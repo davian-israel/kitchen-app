@@ -1,12 +1,15 @@
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
+import { Session } from 'next-auth'
 
 export default async function ProfilePage() {
-  const session = await auth()
+  const session = await auth() as Session | null
 
-  if (!session) {
+  if (!session?.user) {
     redirect('/auth/signin')
   }
+
+  const user = session.user
 
   return (
     <div className="bg-gray-50">
@@ -28,7 +31,7 @@ export default async function ProfilePage() {
                     Full Name
                   </label>
                   <div className="bg-gray-50 px-3 py-2 rounded-md border">
-                    {session.user.name || 'Not provided'}
+                    {user.name || 'Not provided'}
                   </div>
                 </div>
                 <div>
@@ -36,7 +39,7 @@ export default async function ProfilePage() {
                     Email Address
                   </label>
                   <div className="bg-gray-50 px-3 py-2 rounded-md border">
-                    {session.user.email}
+                    {user.email}
                   </div>
                 </div>
                 <div>
@@ -44,7 +47,7 @@ export default async function ProfilePage() {
                     Account Type
                   </label>
                   <div className="bg-gray-50 px-3 py-2 rounded-md border">
-                    <span className="capitalize">{session.user.role.toLowerCase()}</span>
+                    <span className="capitalize">{user.role?.toLowerCase() || 'customer'}</span>
                   </div>
                 </div>
                 <div>
