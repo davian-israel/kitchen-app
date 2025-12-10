@@ -1,7 +1,6 @@
 import { auth } from '@/auth'
 import Link from 'next/link'
 import { Star, Menu, Package, User, Heart, ChefHat } from 'lucide-react'
-import ResponsiveHeader from '@/components/navigation/ResponsiveHeader'
 
 export default async function DashboardPage() {
   const session = await auth()
@@ -14,17 +13,14 @@ export default async function DashboardPage() {
   const userName = (session as any)?.user?.name?.split(' ')[0] || 'Friend'
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header Component */}
-      <ResponsiveHeader />
-
+    <div className="bg-gray-50">
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Hero Welcome Section */}
         <div className="bg-gradient-to-br from-blue-600 to-orange-500 cultural-pattern rounded-2xl shadow-lg p-8 mb-8 text-white">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold mb-2">
+              <h1 className="text-3xl md:text-4xl font-bold mb-2">
                 Welcome back {userName}!
               </h1>
               <p className="text-white/90 text-lg mb-1">
@@ -135,7 +131,7 @@ export default async function DashboardPage() {
             Enjoy Your Meal
           </p>
         </div>
-      </main>
+      </div>
     </div>
   )
 }

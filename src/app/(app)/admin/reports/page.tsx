@@ -16,7 +16,6 @@ import {
   Filter,
   Eye
 } from 'lucide-react'
-import ResponsiveHeader from '@/components/navigation/ResponsiveHeader'
 
 interface ReportData {
   salesReport: {
@@ -189,12 +188,9 @@ export default function ReportsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation Header */}
-      <ResponsiveHeader title="Israel Kitchen - Reports" showCart={false} />
-
+    <div className="bg-gray-50">
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-8">
           <div className="mb-4 sm:mb-0">
@@ -619,7 +615,7 @@ export default function ReportsPage() {
             )}
           </>
         )}
-      </main>
+      </div>
     </div>
   )
 }

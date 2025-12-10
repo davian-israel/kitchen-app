@@ -2,6 +2,7 @@ import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 import { CartProvider } from '@/contexts/CartContext'
 import Cart from '@/components/cart/Cart'
+import ResponsiveHeader from '@/components/navigation/ResponsiveHeader'
 
 export default async function AppLayout({
   children,
@@ -16,8 +17,11 @@ export default async function AppLayout({
 
   return (
     <CartProvider>
-      <div className="relative">
-        {children}
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        <ResponsiveHeader />
+        <main className="flex-1">
+          {children}
+        </main>
         <Cart />
       </div>
     </CartProvider>

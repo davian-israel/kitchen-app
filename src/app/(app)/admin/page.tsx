@@ -2,7 +2,6 @@ import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { Star, Package, Users, DollarSign, TrendingUp } from 'lucide-react'
-import ResponsiveHeader from '@/components/navigation/ResponsiveHeader'
 
 export default async function AdminDashboardPage() {
   const session = await auth()
@@ -12,11 +11,9 @@ export default async function AdminDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <ResponsiveHeader />
-
+    <div className="bg-gray-50">
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Admin Hero Section */}
         <div className="bg-gradient-to-r from-blue-600 to-orange-500 rounded-2xl shadow-lg p-8 mb-8 text-white cultural-pattern">
           <div className="flex items-center justify-between">
@@ -198,7 +195,7 @@ export default async function AdminDashboardPage() {
             <p>No recent activity. System is ready for operations.</p>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   )
 }

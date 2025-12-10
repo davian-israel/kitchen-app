@@ -155,29 +155,16 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation Header */}
-      <nav className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-4">
-              <Link href="/menu" className="flex items-center text-gray-600 hover:text-orange-600">
-                <ArrowLeft className="w-5 h-5 mr-2" />
-                Back to Menu
-              </Link>
-              <div className="text-xl font-bold text-orange-600">
-                Israel Kitchen - Checkout
-              </div>
-            </div>
-            <div className="text-sm text-gray-600">
-              {session.user.name || session.user.email}
-            </div>
-          </div>
-        </div>
-      </nav>
-
+    <div className="bg-gray-50">
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Back to Menu Link */}
+        <div className="mb-6">
+          <Link href="/menu" className="inline-flex items-center text-gray-600 hover:text-orange-600 transition-colors">
+            <ArrowLeft className="w-5 h-5 mr-2" />
+            Back to Menu
+          </Link>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column - Customer Information & Payment */}
           <div className="space-y-6">
@@ -369,7 +356,7 @@ export default function CheckoutPage() {
             <OrderSummary items={cartState.items} total={cartState.totalAmount} />
           </div>
         </div>
-      </main>
+      </div>
     </div>
   )
 }

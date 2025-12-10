@@ -1,6 +1,5 @@
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
 
 export default async function ProfilePage() {
   const session = await auth()
@@ -10,46 +9,9 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation Header */}
-      <nav className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-8">
-              <Link href="/dashboard" className="text-xl font-bold text-orange-600">
-                Israel Kitchen
-              </Link>
-              <div className="hidden md:flex space-x-6">
-                <Link href="/menu" className="text-gray-700 hover:text-orange-600 font-medium">
-                  Menu
-                </Link>
-                <Link href="/orders" className="text-gray-700 hover:text-orange-600 font-medium">
-                  My Orders
-                </Link>
-                <Link href="/profile" className="text-orange-600 font-medium">
-                  Profile
-                </Link>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">
-                {(session as any)?.user?.name || (session as any)?.user?.email}
-              </span>
-              <form action="/api/auth/signout" method="post">
-                <button
-                  type="submit"
-                  className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Sign Out
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </nav>
-
+    <div className="bg-gray-50">
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white shadow rounded-lg">
           <div className="px-6 py-4 border-b border-gray-200">
             <h1 className="text-2xl font-bold text-gray-900">Profile Settings</h1>
@@ -151,7 +113,7 @@ export default async function ProfilePage() {
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   )
 }

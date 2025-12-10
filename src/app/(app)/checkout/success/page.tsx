@@ -111,23 +111,9 @@ export default function CheckoutSuccessPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation Header */}
-      <nav className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="text-xl font-bold text-orange-600">
-              Israel Kitchen
-            </div>
-            <div className="text-sm text-gray-600">
-              {session.user.name || session.user.email}
-            </div>
-          </div>
-        </div>
-      </nav>
-
+    <div className="bg-gray-50">
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Success Header */}
         <div className="text-center mb-8">
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
@@ -269,7 +255,7 @@ export default function CheckoutSuccessPage() {
             Order Again
           </Link>
         </div>
-      </main>
+      </div>
     </div>
   )
 }

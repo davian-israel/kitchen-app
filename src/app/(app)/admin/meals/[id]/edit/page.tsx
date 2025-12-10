@@ -169,27 +169,15 @@ export default function EditMealPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation Header */}
-      <nav className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-8">
-              <Link href="/admin" className="text-xl font-bold text-orange-600">
-                Israel Kitchen Admin
-              </Link>
-              <div className="hidden md:flex space-x-6">
-                <Link href="/admin/meals" className="text-orange-600 font-medium">
-                  ← Back to Meals
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
-
+    <div className="bg-gray-50">
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Back to Meals Link */}
+        <div className="mb-6">
+          <Link href="/admin/meals" className="inline-flex items-center text-orange-600 hover:text-orange-700 font-medium">
+            ← Back to Meals
+          </Link>
+        </div>
         <div className="bg-white shadow rounded-lg">
           <div className="px-6 py-4 border-b border-gray-200">
             <h1 className="text-2xl font-bold text-gray-900">Edit Meal</h1>
@@ -358,7 +346,7 @@ export default function EditMealPage() {
             </div>
           </form>
         </div>
-      </main>
+      </div>
     </div>
   )
 }

@@ -3,23 +3,28 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
+      {/* Skip to main content for accessibility */}
+      <a href="#main-content" className="skip-to-main">
+        Skip to main content
+      </a>
+      
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
+          <div className="flex justify-between items-center py-1.5 sm:py-2">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">Israel Kitchen</h1>
+              <h1 className="text-[28px] sm:text-3xl font-bold text-gray-900">Israel Kitchen</h1>
             </div>
-            <div className="flex space-x-4">
+            <div className="flex space-x-2 sm:space-x-4">
               <Link
                 href="/auth/signin"
-                className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                className="text-gray-700 hover:text-gray-900 px-2 py-1 sm:px-3 sm:py-2 rounded-md text-xs sm:text-sm font-medium"
               >
                 Sign In
               </Link>
               <Link
                 href="/auth/register"
-                className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+                className="bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 sm:px-4 sm:py-2 rounded-md text-xs sm:text-sm font-medium"
               >
                 Register
               </Link>
@@ -29,7 +34,7 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center">
           <h2 className="text-4xl font-bold text-gray-900 sm:text-5xl md:text-6xl">
             Authentic Israel Cuisine
@@ -61,7 +66,7 @@ export default function Home() {
         {/* Features Section */}
         <div className="mt-20">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-6 card-israel">
               <div className="text-center">
                 <div className="text-3xl mb-4">🥙</div>
                 <h3 className="text-lg font-medium text-gray-900">Fresh Ingredients</h3>
@@ -70,7 +75,7 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-6 card-israel">
               <div className="text-center">
                 <div className="text-3xl mb-4">🚀</div>
                 <h3 className="text-lg font-medium text-gray-900">Fast Delivery</h3>
@@ -79,7 +84,7 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-6 card-israel">
               <div className="text-center">
                 <div className="text-3xl mb-4">👨‍🍳</div>
                 <h3 className="text-lg font-medium text-gray-900">Expert Chefs</h3>

@@ -60,6 +60,8 @@ config/keys/
 
 # vercel
 .vercel
+*.agent
+
 
 # typescript
 *.tsbuildinfo

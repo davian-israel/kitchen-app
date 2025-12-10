@@ -245,52 +245,9 @@ export default function UsersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation Header */}
-      <nav className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-8">
-              <Link href="/admin" className="text-xl font-bold text-orange-600">
-                Israel Kitchen - Admin
-              </Link>
-              <div className="hidden md:flex space-x-6">
-                <Link href="/admin/orders" className="text-gray-700 hover:text-orange-600 font-medium">
-                  Orders
-                </Link>
-                <Link href="/admin/meals" className="text-gray-700 hover:text-orange-600 font-medium">
-                  Meals
-                </Link>
-                <Link href="/admin/inventory" className="text-gray-700 hover:text-orange-600 font-medium">
-                  Inventory
-                </Link>
-                <Link href="/admin/users" className="text-orange-600 font-medium">
-                  Users
-                </Link>
-                <Link href="/admin" className="text-gray-700 hover:text-orange-600 font-medium">
-                  Dashboard
-                </Link>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">
-                {session.user.name || session.user.email}
-              </span>
-              <form action="/api/auth/signout" method="post">
-                <button
-                  type="submit"
-                  className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Sign Out
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </nav>
-
+    <div className="bg-gray-50">
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
@@ -643,7 +600,7 @@ export default function UsersPage() {
             )}
           </div>
         </div>
-      </main>
+      </div>
     </div>
   )
 }

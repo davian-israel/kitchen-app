@@ -129,7 +129,7 @@ export default function RegisterPage() {
               <Star className="w-8 h-8 text-orange-500" fill="currentColor" />
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Israel Kitchen</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Israel Kitchen</h1>
           <h2 className="text-xl font-semibold text-gray-800 mb-1">
             Join the Israel Kitchen Family
           </h2>
@@ -142,7 +142,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 space-y-6">
+        <div className="bg-white rounded-2xl shadow-xl p-8 space-y-6 card-israel">
           <form className="space-y-5" onSubmit={handleSubmit}>
             {/* Full Name Field */}
             <div className="space-y-2">

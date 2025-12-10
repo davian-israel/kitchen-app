@@ -12,6 +12,16 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontSize: {
+        'h1': ['30px', { lineHeight: '1.2', fontWeight: '700' }],
+        'h1-mobile': ['28px', { lineHeight: '1.2', fontWeight: '700' }],
+      },
+      minHeight: {
+        'touch': '44px',
+      },
+      minWidth: {
+        'touch': '44px',
+      },
     },
   },
   plugins: [],

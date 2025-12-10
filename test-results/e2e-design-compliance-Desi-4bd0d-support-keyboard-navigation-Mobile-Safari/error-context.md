@@ -1,0 +1,41 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - link "Skip to main content" [ref=e3]:
+      - /url: "#main-content"
+    - banner [ref=e4]:
+      - generic [ref=e6]:
+        - heading "Israel Kitchen" [level=1] [ref=e8]
+        - generic [ref=e9]:
+          - link "Sign In" [ref=e10]:
+            - /url: /auth/signin
+          - link "Register" [ref=e11]:
+            - /url: /auth/register
+    - main [ref=e12]:
+      - generic [ref=e13]:
+        - heading "Authentic Israel Cuisine" [level=2] [ref=e14]
+        - paragraph [ref=e15]: Experience the rich flavors of Israel with our carefully crafted dishes. From traditional falafel to modern Israel fusion, we bring the taste of the Mediterranean to your table.
+        - generic [ref=e16]:
+          - link "Get Started" [ref=e18]:
+            - /url: /auth/register
+          - link "Sign In" [ref=e20]:
+            - /url: /auth/signin
+      - generic [ref=e22]:
+        - generic [ref=e24]:
+          - generic [ref=e25]: 🥙
+          - heading "Fresh Ingredients" [level=3] [ref=e26]
+          - paragraph [ref=e27]: We use only the freshest ingredients sourced locally and imported from Israel.
+        - generic [ref=e29]:
+          - generic [ref=e30]: 🚀
+          - heading "Fast Delivery" [level=3] [ref=e31]
+          - paragraph [ref=e32]: Quick preparation and delivery to get your favorite dishes to you fast.
+        - generic [ref=e34]:
+          - generic [ref=e35]: 👨‍🍳
+          - heading "Expert Chefs" [level=3] [ref=e36]
+          - paragraph [ref=e37]: Our experienced chefs bring authentic Israel flavors to every dish.
+    - contentinfo [ref=e38]:
+      - paragraph [ref=e41]: © 2024 Israel Kitchen. All rights reserved.
+  - alert [ref=e42]
+```

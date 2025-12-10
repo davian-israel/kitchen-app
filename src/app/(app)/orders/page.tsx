@@ -5,7 +5,6 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Clock, CheckCircle, Package, ChefHat, AlertCircle, MapPin, Phone, User, RefreshCw } from 'lucide-react'
-import ResponsiveHeader from '@/components/navigation/ResponsiveHeader'
 
 interface Order {
   id: string
@@ -187,12 +186,9 @@ export default function OrdersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation Header */}
-      <ResponsiveHeader />
-
+    <div className="bg-gray-50">
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">My Orders</h1>
@@ -475,7 +471,7 @@ export default function OrdersPage() {
             </Link>
           </div>
         )}
-      </main>
+      </div>
     </div>
   )
 }

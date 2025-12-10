@@ -9,9 +9,6 @@ import {
   Heart, 
   Clock, 
   Star, 
-  Home, 
-  Search, 
-  User,
   ChevronLeft,
   MoreVertical
 } from 'lucide-react'
@@ -31,29 +28,6 @@ interface Meal {
   prepTime?: number
   isFavorite?: boolean
   features?: string[]
-}
-
-// Bottom Navigation Component
-const BottomNavItem = ({ icon, text, active = false, onClick }: {
-  icon: React.ReactNode
-  text: string
-  active?: boolean
-  onClick?: () => void
-}) => {
-  return (
-    <div className="flex flex-col items-center cursor-pointer" onClick={onClick}>
-      <div
-        className={`p-3 rounded-full transition-colors duration-300 ${
-          active ? 'bg-black text-white shadow-lg' : 'text-gray-500 hover:text-gray-800'
-        }`}
-      >
-        {icon}
-      </div>
-      <span className={`mt-1 text-xs font-medium ${active ? 'text-black' : 'text-gray-500'}`}>
-        {text}
-      </span>
-    </div>
-  )
 }
 
 // Food Item Card Component
@@ -430,11 +404,11 @@ export default function MenuPage() {
 
   // Show main menu page
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="bg-gray-50 flex flex-col">
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-blue-600 to-orange-500 cultural-pattern">
         <div className="px-5 py-8 text-center">
-          <h1 className="text-3xl font-bold text-white mb-2">
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
             Delicious Israel Food
           </h1>
           <p className="text-white/90 text-lg mb-1">
@@ -467,7 +441,7 @@ export default function MenuPage() {
 
       {/* Food Items Grid */}
       <div className="flex-grow px-5 py-6">
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredMeals.map((item) => (
             <FoodItemCard
               key={item.id}
@@ -500,30 +474,6 @@ export default function MenuPage() {
         </div>
       )}
 
-      {/* Bottom Navigation Bar */}
-      <div className="sticky bottom-0 bg-white shadow-2xl p-4 rounded-t-3xl flex justify-around items-center border-t border-gray-100">
-        <BottomNavItem 
-          icon={<Home size={24} />} 
-          text="Home" 
-          active 
-          onClick={() => router.push('/dashboard')}
-        />
-        <BottomNavItem 
-          icon={<Menu size={24} />} 
-          text="Menu" 
-          onClick={() => setCurrentPage('menu')}
-        />
-        <BottomNavItem 
-          icon={<Search size={24} />} 
-          text="Search" 
-          onClick={() => {/* Add search functionality */}}
-        />
-        <BottomNavItem 
-          icon={<User size={24} />} 
-          text="Profile" 
-          onClick={() => router.push('/profile')}
-        />
-      </div>
     </div>
   )
 }
