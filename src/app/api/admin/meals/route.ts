@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
+import { Session } from 'next-auth'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,9 +19,9 @@ const createMealSchema = z.object({
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth()
+    const session = await auth() as Session | null
     
-    if (!session || session.user.role !== 'ADMIN') {
+    if (!session?.user?.role || session.user.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -40,9 +41,9 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth()
+    const session = await auth() as Session | null
     
-    if (!session || session.user.role !== 'ADMIN') {
+    if (!session?.user?.role || session.user.role !== 'ADMIN') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -80,7 +81,7 @@ export async function POST(request: NextRequest) {
     
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Invalid input', details: error.errors },
+        { error: 'Invalid input', details: error.issues },
         { status: 400 }
       )
     }

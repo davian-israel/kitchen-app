@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { db as prisma } from '@/lib/db'
 import { z } from 'zod'
+import { Session } from 'next-auth'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,9 +17,9 @@ export async function GET(
   { params }: { params: { userId: string } }
 ) {
   try {
-    const session = await auth()
+    const session = await auth() as Session | null
     
-    if (!session) {
+    if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -99,9 +100,9 @@ export async function PATCH(
   { params }: { params: { userId: string } }
 ) {
   try {
-    const session = await auth()
+    const session = await auth() as Session | null
     
-    if (!session) {
+    if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
@@ -193,7 +194,7 @@ export async function PATCH(
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Invalid request data', details: error.errors },
+        { error: 'Invalid request data', details: error.issues },
         { status: 400 }
       )
     }
@@ -211,9 +212,9 @@ export async function DELETE(
   { params }: { params: { userId: string } }
 ) {
   try {
-    const session = await auth()
+    const session = await auth() as Session | null
     
-    if (!session) {
+    if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }

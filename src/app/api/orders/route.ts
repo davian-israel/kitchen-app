@@ -5,15 +5,16 @@ import { z } from 'zod'
 import { createOrderSchema, sanitizeString } from '@/lib/validation'
 import { withErrorHandler, validateAndSanitizeInput, SecurityError, checkActionRateLimit } from '@/lib/error-handler'
 import { auditLogger, AuditAction } from '@/lib/audit-logger'
+import { Session } from 'next-auth'
 
 export const dynamic = 'force-dynamic'
 
 
 
 export const GET = withErrorHandler(async (request: NextRequest) => {
-  const session = await auth()
+  const session = await auth() as Session | null
   
-  if (!session) {
+  if (!session?.user?.id) {
     throw new SecurityError('Unauthorized', 401)
   }
 
@@ -59,9 +60,9 @@ export const GET = withErrorHandler(async (request: NextRequest) => {
 }, { action: 'fetch_orders', resource: 'order' })
 
 export const POST = withErrorHandler(async (request: NextRequest) => {
-  const session = await auth()
+  const session = await auth() as Session | null
   
-  if (!session) {
+  if (!session?.user?.id) {
     throw new SecurityError('Unauthorized', 401)
   }
 

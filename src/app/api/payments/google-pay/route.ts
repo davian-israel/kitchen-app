@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { db as prisma } from '@/lib/db'
+import { Session } from 'next-auth'
 
 export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth()
+    const session = await auth() as Session | null
     
-    if (!session) {
+    if (!session?.user?.id) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }

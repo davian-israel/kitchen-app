@@ -119,7 +119,7 @@ export default function ResponsiveHeader({
           </div>
 
           {/* Mobile Navigation */}
-          <MobileNav userRole={session?.user?.role} />
+          <MobileNav userRole={session?.user?.role as 'CUSTOMER' | 'ADMIN' | undefined} />
         </div>
       </div>
       

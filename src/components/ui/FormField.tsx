@@ -40,7 +40,7 @@ export default function FormField({
   rows = 3,
   options = []
 }: FormFieldProps) {
-  const hasError = touched && error
+  const hasError = touched && !!error
   const fieldId = `field-${name}`
 
   const baseInputClasses = `
