@@ -90,6 +90,12 @@ export async function middleware(request: NextRequest) {
     '/api/admin',
   ]
 
+  // Kitchen staff routes
+  const kitchenRoutes = [
+    '/kitchen',
+    '/api/kitchen',
+  ]
+
   // Check if the route is public
   if (publicRoutes.some(route => pathname === route || pathname.startsWith(route))) {
     // If user is authenticated and trying to access auth pages, redirect to dashboard
@@ -170,6 +176,38 @@ export async function middleware(request: NextRequest) {
         undefined,
         { path: pathname }
       )
+    }
+  }
+
+  // Check kitchen routes
+  if (kitchenRoutes.some(route => pathname.startsWith(route))) {
+    const userRole = (session as any)?.user?.role;
+    if (!userRole || (userRole !== 'KITCHEN_STAFF' && userRole !== 'ADMIN')) {
+      // Log unauthorized kitchen access attempt
+      await auditLogger.logSecurity(
+        AuditAction.UNAUTHORIZED_ACCESS,
+        (session as any)?.user?.id || 'anonymous',
+        request,
+        { 
+          path: pathname, 
+          reason: 'insufficient_privileges_kitchen', 
+          userRole: userRole 
+        }
+      )
+
+      if (pathname.startsWith('/api/')) {
+        const forbiddenResponse = NextResponse.json({ error: 'Forbidden - Kitchen staff access required' }, { status: 403 })
+        Object.entries(securityHeaders).forEach(([key, value]) => {
+          forbiddenResponse.headers.set(key, value)
+        })
+        return forbiddenResponse
+      }
+      
+      const redirectResponse = NextResponse.redirect(new URL('/dashboard', request.url))
+      Object.entries(securityHeaders).forEach(([key, value]) => {
+        redirectResponse.headers.set(key, value)
+      })
+      return redirectResponse
     }
   }
 

@@ -22,16 +22,29 @@ export default function SignInPage() {
       const result = await signIn('credentials', {
         email,
         password,
-        callbackUrl: '/dashboard',
-        redirect: true,
+        redirect: false, // Handle redirect manually based on role
       })
 
       if (result?.error) {
         setError('Invalid email or password')
+        setIsLoading(false)
+        return
+      }
+
+      // Fetch session to get user role for role-based redirect
+      const sessionResponse = await fetch('/api/auth/session')
+      const session = await sessionResponse.json()
+      
+      // Redirect based on user role
+      if (session?.user?.role === 'ADMIN') {
+        router.push('/admin')
+      } else if (session?.user?.role === 'KITCHEN_STAFF') {
+        router.push('/kitchen/orders')
+      } else {
+        router.push('/dashboard')
       }
     } catch (error) {
       setError('An error occurred. Please try again.')
-    } finally {
       setIsLoading(false)
     }
   }

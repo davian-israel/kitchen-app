@@ -24,6 +24,7 @@
     "create-test-user": "tsx scripts/create-test-user.ts",
     "verify-users": "tsx scripts/verify-users.ts",
     "verify-kitchen-staff": "tsx scripts/verify-kitchen-staff.ts",
+    "test-kitchen-login": "tsx scripts/test-kitchen-login.ts",
     "verify-admin-login": "tsx scripts/verify-admin-login.ts",
     "test-login-api": "tsx scripts/test-login-api.ts",
     "test-nextauth-login": "tsx scripts/test-nextauth-login.ts",
